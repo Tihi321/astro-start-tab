@@ -1,5 +1,5 @@
 import { styled } from "solid-styled-components";
-import { createComputed, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 
 const Container = styled("div")`
   width: 100%;

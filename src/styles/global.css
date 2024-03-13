@@ -6,7 +6,7 @@
 
 html {
 	--light: rgba(254, 250, 242, 1);
-	--dark: rgba(51, 51, 51, 0.5);
+	--dark: rgba(51, 51, 51, 0.7);
 	--link-hover: rgba(0, 188, 212, 1);
 	--link-color: rgba(175, 230, 255, 1);
 	--text: rgba(254, 250, 242, 1);

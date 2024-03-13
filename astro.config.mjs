@@ -7,7 +7,7 @@ import postcss from 'postcss';
 export default defineConfig({
   integrations: [sitemap()],
   outDir: './dist',
-  site: ' https://tihi321.github.io/astro-start-tab',
+  site: ' https://tihi321.github.io/astro-start-tab/',
   vite: {
     plugins: [
       postcss({

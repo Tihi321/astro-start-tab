@@ -13,36 +13,35 @@ if ((argvs[0] === '--p' || argvs[0] === '-path') && argvs[1]) {
 
 
     const replaceUrlsInFiles = function(dirPath, arrayOfFiles) {
-        files = fs.readdirSync(dirPath)
+      files = fs.readdirSync(dirPath);
+      files.forEach(function(file) {
+          const current = fs.statSync(dirPath + "/" + file)
+          if (current.isDirectory()) {
+              replaceUrlsInFiles(dirPath + "/" + file, arrayOfFiles)
+          } else {
+            const url = import.meta.url;
+            const urlReplace = url.replace(/file\:/, '');
+            const filePath = path.join(path.dirname(urlReplace), dirPath, "/", file).replace(/^[^a-zA-Z]+/, '');
 
-        files.forEach(function(file) {
-            const current = fs.statSync(dirPath + "/" + file)
-            if (current.isDirectory()) {
-                replaceUrlsInFiles(dirPath + "/" + file, arrayOfFiles)
-            } else {
-                const filePath = path.join(
-                    path.dirname(
-                        (
-                            import.meta.url).replace(/file\:/, '')), dirPath, "/", file)
-                if (extensions.includes(path.extname(filePath))) {
-                    let content = fs.readFileSync(filePath)
+              if (extensions.includes(path.extname(filePath))) {
+                  let content = fs.readFileSync(filePath);
 
-                    content = String(content).replace(/src=["'][.]{0,1}\//g, `src="${PRODUCTION_URL}`);
-                    content = String(content).replace(/href=["'][.]{0,1}\//g, `href="${PRODUCTION_URL}`);
-                    content = String(content).replace(/url\(["'][.]{0,1}\//g, `url("${PRODUCTION_URL}`);
-                    
-                    fs.writeFileSync(filePath, content)
-                }
-            }
-        })
+                  content = String(content).replace(/src=["'][.]{0,1}\//g, `src="${PRODUCTION_URL}`);
+                  content = String(content).replace(/href=["'][.]{0,1}\//g, `href="${PRODUCTION_URL}`);
+                  content = String(content).replace(/url\(["'][.]{0,1}\//g, `url("${PRODUCTION_URL}`);
+
+                  console.log({
+                    filePath,
+                    content
+                  });
+                  fs.writeFileSync(filePath, content)
+              }
+          }
+      });
+      console.log('done');
     }
 
-    if (PRODUCTION_URL && process.env.NODE_ENV === 'production') {
-        replaceUrlsInFiles(PUBLIC_DIR, files)
-    } else {
-        console.log('skip postbuild')
-        process.exit(0)
-    }
+    replaceUrlsInFiles(PUBLIC_DIR, files)
 } else {
     console.error('please provide a path argument "-path", "--p"')
     process.exit(1)

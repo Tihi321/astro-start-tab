@@ -9,7 +9,7 @@ import solidJs from "@astrojs/solid-js";
 export default defineConfig({
   integrations: [sitemap(), solidJs()],
   outDir: './dist',
-  site: ' https://tihi321.github.io/astro-start-tab/',
+  site: 'https://www.new-tab.tihomir-selak.form.hr',
   vite: {
     plugins: [postcss({
       plugins: [postcssNested()

@@ -1,14 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { getWebsiteUrl } from "../utils";
 import { Search } from "../blocks/inputs/Search.tsx";
 import { Beats } from "../blocks/audio/Beats.tsx";
-const siteUrl = getWebsiteUrl();
 ---
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <div class="backround-image" style={`background-image: url(${siteUrl}/images/sky.jpeg);`}></div>
+  <div class="backround-image"></div>
   <header>
     <div class="websites">
       <div>Blog: <a href="https://tihomir-selak.from.hr/">tihomir-selak.from.hr</a></div>
@@ -83,7 +81,7 @@ const siteUrl = getWebsiteUrl();
         </a>
       </div>
     </div>
-    <img class="user" src=`${siteUrl}/images/caricature.png` alt="" />
+    <img class="user" src=`/images/caricature.png` alt="" />
     <div class="weather">
       <iframe
         src="https://www.meteoblue.com/en/weather/widget/three/osijek_croatia_3193935?geoloc=fixed&nocurrent=0&noforecast=0&noforecast=1&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=dark"
@@ -124,12 +122,12 @@ const siteUrl = getWebsiteUrl();
 </main>
 <footer>
   <div class="music">
-    <Beats client:only src=`${siteUrl}/audio/just-relax.mp3` name="Relax" />
-    <Beats client:only src=`${siteUrl}/audio/lofi-beats.mp3` name="Lofy" />
-    <Beats client:only src=`${siteUrl}/audio/forest.mp3` name="Forest" />
-    <Beats client:only src=`${siteUrl}/audio/rain.mp3` name="Rain" />
-    <Beats client:only src=`${siteUrl}/audio/waves.mp3` name="Waves" />
-    <Beats client:only src=`${siteUrl}/audio/campfire.mp3` name="Campfire" />
+    <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
+    <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
+    <Beats client:only src=`/audio/forest.mp3` name="Forest" />
+    <Beats client:only src=`/audio/rain.mp3` name="Rain" />
+    <Beats client:only src=`/audio/waves.mp3` name="Waves" />
+    <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
   </div>
 
   <style>
@@ -139,6 +137,7 @@ const siteUrl = getWebsiteUrl();
       left: 0;
       width: 100%;
       height: 100%;
+      background-image: url("/images/sky.jpeg");
       background-size: cover;
       background-position: center;
       z-index: -1;

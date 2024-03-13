@@ -23,6 +23,11 @@ const Submit = styled("button")`
   cursor: pointer;
   color: var(--text);
   background: var(--dark);
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const Search = () => {
@@ -54,7 +59,9 @@ export const Search = () => {
         placeholder="Search"
         value={search()}
       />
-      <Submit onClick={sendSearch}>Search</Submit>
+      <Submit onClick={sendSearch}>
+        <img src="/images/icons/magnifier.png" />
+      </Submit>
     </Container>
   );
 };

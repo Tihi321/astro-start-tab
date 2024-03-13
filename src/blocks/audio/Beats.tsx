@@ -1,3 +1,4 @@
+import { toLower } from "lodash-es";
 import { createEffect, createSignal } from "solid-js";
 import { styled } from "solid-styled-components";
 
@@ -61,9 +62,27 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
     }
   });
 
+  createEffect(() => {
+    document.addEventListener("play-preset", () => {
+      const beats = localStorage.getItem("beats");
+      const beatsVolume = beats ? JSON.parse(beats) : {};
+      const volume = beatsVolume[toLower(name)] || 0;
+      if (volume !== 0 && audioElement) {
+        audioElement.play();
+        audioElement.volume = volume / 100;
+        setAudioVolume(volume);
+      }
+    });
+  });
+
   const onChange = (event: any) => {
     if (audioElement) {
       const volume = Number(event.currentTarget.value);
+      const beats = localStorage.getItem("beats");
+      const beatsVolume = beats ? JSON.parse(beats) : {};
+      beatsVolume[toLower(name)] = volume;
+      localStorage.setItem("beats", JSON.stringify(beatsVolume));
+
       setAudioVolume(volume);
       if (volume === 0) {
         audioElement.pause();

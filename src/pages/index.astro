@@ -5,6 +5,26 @@ import { Search } from "../blocks/inputs/Search.tsx";
 import { Beats } from "../blocks/audio/Beats.tsx";
 ---
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const playPreset = document.getElementById("play-preset");
+
+    playPreset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("play-preset"));
+    });
+
+    const api_url = "https://zenquotes.io/api/quotes/";
+
+    async function getapi(url: any) {
+      const response = await fetch(url);
+      var data = await response.json();
+      console.log(data);
+    }
+
+    getapi(api_url);
+  });
+</script>
+
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <div class="backround-image"></div>
   <header>
@@ -100,24 +120,60 @@ import { Beats } from "../blocks/audio/Beats.tsx";
 <main>
   <Search client:only />
   <div class="shortcuts">
-    <div class="link"><a href="https://mail.google.com/">Gmail</a></div>
-    <div class="link"><a href="https://calendar.google.com/">Kalendar</a></div>
-    <div class="link"><a href="https://www.bing.com/images/create3">Creator</a></div>
-    <div class="link"><a href="https://mail.google.com/chat/">Chat</a></div>
-    <div class="link"><a href="https://drive.google.com/drive/my-drive">Drive</a></div>
-    <div class="link"><a href="https://www.messenger.com/">Messenger</a></div>
-    <div class="link"><a href="https://www.instagram.com/">Instagram</a></div>
-    <div class="link"><a href="https://www.linkedin.com/">LinkedIn</a></div>
-    <div class="link"><a href="https://www.youtube.com/">Youtube</a></div>
-    <div class="link"><a href="https://www.eurosport.co.uk/">Eurosport</a></div>
-    <div class="link"><a href="https://www.humblebundle.com/">Humble Bundle</a></div>
-    <div class="link"><a href="https://copilot.microsoft.com/">Copilot</a></div>
-    <div class="link"><a href="https://app.slack.com/client/T03TQ1AE0/C06HN30987Ml">Slack</a></div>
-    <div class="link"><a href="https://app.letsrecast.ai/?ref=null">Recast</a></div>
-    <div class="link"><a href="https://www.perplexity.ai/">Perplexity</a></div>
+    <a class="link" href="https://mail.google.com/">
+      <img src="/images/icons/mail.png" />Gmail
+    </a>
+    <a class="link" href="https://outlook.live.com/mail/0/">
+      <img src="/images/icons/outlook.png" />Outlook
+    </a>
+    <a class="link" href="https://calendar.google.com/">
+      <img src="/images/icons/kalendar.png" />Kalendar
+    </a>
+    <a class="link" href="https://mail.google.com/chat/">
+      <img src="/images/icons/chat.png" />Chat
+    </a>
+    <a class="link" href="https://drive.google.com/drive/my-drive">
+      <img src="/images/icons/drive.png" />Drive
+    </a>
+    <a class="link" href="https://www.messenger.com/">
+      <img src="/images/icons/messenger.png" />Messenger
+    </a>
+    <a class="link" href="https://www.instagram.com/">
+      <img src="/images/icons/instagram.png" />Instagram
+    </a>
+    <a class="link" href="https://www.linkedin.com/">
+      <img src="/images/icons/linkedin.png" />LinkedIn
+    </a>
+    <a class="link" href="https://www.youtube.com/">
+      <img src="/images/icons/youtube.png" />Youtube
+    </a>
+    <a class="link" href="https://www.eurosport.co.uk/">
+      <img src="/images/icons/eurosport.png" />Eurosport
+    </a>
+    <a class="link" href="https://www.humblebundle.com/">
+      <img src="/images/icons/humble.png" />Humble Bundle
+    </a>
+    <a class="link" href="https://app.slack.com/client/T03TQ1AE0/C06HN30987Ml">
+      <img src="/images/icons/slack.png" />Slack
+    </a>
+    <a class="link" href="https://app.letsrecast.ai/?ref=null">
+      <img src="/images/icons/recast.png" />Recast
+    </a>
+    <a class="link" href="https://www.perplexity.ai/">
+      <img src="/images/icons/perplexity.png" />Perplexity
+    </a>
+    <a class="link" href="https://copilot.microsoft.com/">
+      <img src="/images/icons/copilot.png" />Copilot
+    </a>
   </div>
 </main>
 <footer>
+  <button class="play-preset" id="play-preset">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M9 10.222L9 19.778 16.481 15 9 10.222z"></path>
+    </svg>
+  </button>
   <div class="music">
     <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
     <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
@@ -126,7 +182,6 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     <Beats client:only src=`/audio/waves.mp3` name="Waves" />
     <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
   </div>
-
   <style>
     .backround-image {
       position: fixed;
@@ -217,27 +272,45 @@ import { Beats } from "../blocks/audio/Beats.tsx";
       .link {
         border: 1px solid var(--light);
         background: var(--dark);
-        padding: 4px;
+        padding: 8px;
         border-radius: 4px;
         cursor: pointer;
         min-width: 60px;
-        height: 40px;
+        height: 60px;
+        font-size: 14px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 4px;
         line-height: 1;
+
+        img {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
 
     footer {
       display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
       padding: 8px;
 
       .music {
         display: flex;
         gap: 8px;
+      }
+
+      .play-preset {
+        width: 60px;
+        display: flex;
+        background: none;
+        border: none;
+        cursor: pointer;
       }
     }
   </style>

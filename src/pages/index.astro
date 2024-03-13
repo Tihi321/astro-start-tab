@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getWebsiteUrl } from "../utils";
+const siteUrl = getWebsiteUrl();
 ---
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -12,7 +14,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
       <div class="services-title heading">Team</div>
       <ul role="list" class="team">
         <li class="member">
-          <img src="/images/caricature.png" alt="" /><div class="member-info">
+          <img src=`${siteUrl}/images/caricature.png` alt="" /><div class="member-info">
             <div class="member-name">Tihomir Selak</div>
             <div class="member-role">CEO/CTO</div>
             <div class="member-background">

@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "postbuild": "node ./postbuild.mjs -path https://tihi321.github.io/astro-start-tab",
     "preview": "astro preview",
     "astro": "astro"
   },

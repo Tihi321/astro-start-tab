@@ -6,8 +6,8 @@ import postcss from 'postcss';
 // https://astro.build/config
 export default defineConfig({
   integrations: [sitemap()],
-  outDir: './docs',
-  site: 'https://www.start.tihomir-selak.from.hr',
+  outDir: './dist',
+  site: 'https://tihi321.github.io/astro-start-tab/',
   vite: {
     plugins: [
       postcss({

@@ -9,7 +9,7 @@ import solidJs from "@astrojs/solid-js";
 export default defineConfig({
   integrations: [sitemap(), solidJs()],
   outDir: './dist',
-  site: 'https://www.new-tab.tihomir-selak.form.hr',
+  site: 'https://tab.tihomir-selak.from.hr/',
   vite: {
     plugins: [postcss({
       plugins: [postcssNested()

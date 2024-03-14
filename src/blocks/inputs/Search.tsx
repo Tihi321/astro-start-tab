@@ -16,6 +16,9 @@ const Input = styled("input")`
   border-radius: 4px;
   background: var(--dark);
   color: var(--text);
+  &::placeholder {
+    color: var(--text);
+  }
 `;
 
 const Submit = styled("button")`

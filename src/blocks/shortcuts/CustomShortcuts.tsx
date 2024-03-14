@@ -3,17 +3,18 @@ import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 
 const Container = styled("div")`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 4px;
+  position: relative;
   height: 160px;
+  padding: 8px 0;
 `;
 
 const Shortcuts = styled("div")`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  height: fit-content;
+  gap: 4px;
 `;
 
 const Shortcut = styled("div")`
@@ -24,6 +25,7 @@ const Shortcut = styled("div")`
   align-items: center;
   height: fit-content;
   gap: 4px;
+  height: 100%;
 
   &:hover {
     button {
@@ -58,17 +60,21 @@ const RemoveButton = styled("button")`
 `;
 
 const AddContainer = styled("div")`
+  position: absolute;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 150px;
+  flex-direction: column;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
   height: 100%;
 `;
 
 const AddButton = styled("button")`
-  width: 30px;
-  height: 100%;
+  width: 100%;
+  height: 20px;
   padding: 4px;
+  line-height: 1;
   border-radius: 4px;
   background: var(--dark);
   color: var(--text);
@@ -84,8 +90,10 @@ const Inputs = styled("div")`
   height: 100%;
   opacity: 0;
   transition: opacity 0.2s;
+  pointer-events: none;
 
   &.show {
+    pointer-events: auto;
     opacity: 1;
   }
 `;
@@ -95,10 +103,14 @@ const Input = styled("input")`
   text-align: center;
   border: 1px solid var(--light);
   border-radius: 4px;
-  background: var(--dark);
+  background: var(--backdrop);
   color: var(--text);
   width: 100%;
   height: 40px;
+
+  &::placeholder {
+    color: var(--text);
+  }
 `;
 
 const SaveButton = styled("button")`
@@ -106,7 +118,7 @@ const SaveButton = styled("button")`
   flex: 1;
   padding: 4px;
   border-radius: 4px;
-  background: var(--dark);
+  background: var(--backdrop);
   color: var(--text);
   border: 1px solid var(--light);
   cursor: pointer;
@@ -146,14 +158,19 @@ export const CustomShortcuts = () => {
         ))}
       </Shortcuts>
       <AddContainer>
+        <AddButton onClick={() => setShowInputs(!showInputs())}>
+          {showInputs() ? "-" : "+"}
+        </AddButton>
         <Inputs class={showInputs() ? "show" : ""}>
           <Input
+            autocomplete="off"
             type="text"
             value={name()}
             onInput={(e: any) => setName(e.target.value)}
             placeholder="Name"
           />
           <Input
+            autocomplete="off"
             type="text"
             value={url()}
             onInput={(e: any) => setUrl(e.target.value)}
@@ -172,9 +189,6 @@ export const CustomShortcuts = () => {
             Save
           </SaveButton>
         </Inputs>
-        <AddButton onClick={() => setShowInputs(!showInputs())}>
-          {showInputs() ? "-" : "+"}
-        </AddButton>
       </AddContainer>
     </Container>
   );

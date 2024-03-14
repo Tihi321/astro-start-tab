@@ -1,7 +1,7 @@
-import { map } from "lodash-es";
-import { createSignal, onMount } from "solid-js";
+import { filter, map, includes, toLower } from "lodash-es";
+import { createSignal, onMount, createEffect } from "solid-js";
 import { styled } from "solid-styled-components";
-import { feedList } from "./store";
+import { feedList, search } from "./store";
 
 const Container = styled("div")`
   margin: auto;
@@ -17,6 +17,7 @@ const Feed = styled("div")`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+  align-items: flex-start;
 
   a {
     font-size: 14px;
@@ -102,30 +103,40 @@ export const FeedList = () => {
     <Container>
       {expand() && (
         <ExpandedFeed>
-          {map(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
-            return (
-              <article>
-                <h2 class="title">
-                  <a href={news.url} target="_blank">
-                    {news.title}
-                  </a>
-                </h2>
-                <p innerHTML={news.content}></p>
-              </article>
-            );
-          })}
+          {map(
+            filter(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
+              return includes(toLower(news.title), toLower(search.value));
+            }),
+            (news) => {
+              return (
+                <article>
+                  <h2 class="title">
+                    <a href={news.url} target="_blank">
+                      {news.title}
+                    </a>
+                  </h2>
+                  <p innerHTML={news.content}></p>
+                </article>
+              );
+            }
+          )}
         </ExpandedFeed>
       )}
       {!expand() && (
         <Feed>
-          {map(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
-            return (
-              <a href={news.url} target="_blank">
-                <img src={news.src} alt={news.title} />
-                <span>{news.title}</span>
-              </a>
-            );
-          })}
+          {map(
+            filter(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
+              return includes(toLower(news.title), toLower(search.value));
+            }),
+            (news) => {
+              return (
+                <a href={news.url} target="_blank">
+                  <img src={news.src} alt={news.title} />
+                  <span>{news.title}</span>
+                </a>
+              );
+            }
+          )}
         </Feed>
       )}
     </Container>

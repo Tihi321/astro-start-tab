@@ -2,11 +2,11 @@ import { isEqual } from "lodash-es";
 import { createSignal, createEffect } from "solid-js";
 import { styled } from "solid-styled-components";
 import { FeedList } from "./FeedList";
-import { setFeedList } from "./store";
+import { setFeedList, search, setSearch } from "./store";
 import { getBugList, getTechCrunch, getVergeList } from "./utils";
 
 const Container = styled("div")`
-  margin: auto;
+  width: 100%;
 `;
 
 const Buttons = styled("div")`
@@ -18,9 +18,8 @@ const Buttons = styled("div")`
 const NewsLinks = styled("div")`
   display: flex;
   gap: 4px;
-  flex-direction: column;
-  align-items: center;
-  width: 120px;
+  flex-direction: row;
+  align-items: end;
 
   img {
     width: 30px;
@@ -39,10 +38,32 @@ const NewsLink = styled("a")`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  width: 100%;
+  width: 150px;
   background: var(--dark);
   border-radius: 8px;
   padding: 8px;
+`;
+
+const FeedOptions = styled("div")`
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const SearchInput = styled("input")`
+  outline: none;
+  text-align: center;
+  border: 1px solid var(--light);
+  border-radius: 4px;
+  background: var(--dark);
+  color: var(--text);
+  width: 200px;
+  height: 30px;
+
+  &::placeholder {
+    color: var(--text);
+  }
 `;
 
 const NewsFeedButtons = styled("div")`
@@ -75,7 +96,7 @@ const NewsFeedButton = styled("button")`
 const ContentOptions = styled("div")`
   display: flex;
   gap: 4px;
-  flex-direction: column;
+  flex-direction: row;
   width: 80px;
   height: auto;
 `;
@@ -151,30 +172,37 @@ export const NewsFeed = () => {
   return (
     <Container>
       <Buttons>
-        <NewsFeedButtons>
-          <NewsFeedButton
-            class={isEqual(selected(), NEWS_LIST.BUG) ? "active" : ""}
-            onClick={() => setSelected(NEWS_LIST.BUG)}
-          >
-            Bug
-          </NewsFeedButton>
-          <NewsFeedButton
-            class={isEqual(selected(), NEWS_LIST.VERGE) ? "active" : ""}
-            onClick={() => setSelected(NEWS_LIST.VERGE)}
-          >
-            Verge
-          </NewsFeedButton>
-          <NewsFeedButton
-            class={isEqual(selected(), NEWS_LIST.TECHCRUNCH) ? "active" : ""}
-            onClick={() => setSelected(NEWS_LIST.TECHCRUNCH)}
-          >
-            Techcrunch
-          </NewsFeedButton>
-        </NewsFeedButtons>
-        <ContentOptions>
-          <MoreButton onClick={expandToggle}>{expand() ? "Contract" : "Expand"}</MoreButton>
-          <MoreButton onClick={fullContentToggle}>{fullContent() ? "Less" : "More"}</MoreButton>
-        </ContentOptions>
+        <FeedOptions>
+          <NewsFeedButtons>
+            <NewsFeedButton
+              class={isEqual(selected(), NEWS_LIST.BUG) ? "active" : ""}
+              onClick={() => setSelected(NEWS_LIST.BUG)}
+            >
+              Bug
+            </NewsFeedButton>
+            <NewsFeedButton
+              class={isEqual(selected(), NEWS_LIST.VERGE) ? "active" : ""}
+              onClick={() => setSelected(NEWS_LIST.VERGE)}
+            >
+              Verge
+            </NewsFeedButton>
+            <NewsFeedButton
+              class={isEqual(selected(), NEWS_LIST.TECHCRUNCH) ? "active" : ""}
+              onClick={() => setSelected(NEWS_LIST.TECHCRUNCH)}
+            >
+              Techcrunch
+            </NewsFeedButton>
+          </NewsFeedButtons>
+          <ContentOptions>
+            <SearchInput
+              value={search.value}
+              onInput={(e: any) => setSearch({ value: e.target.value })}
+              placeholder="Search"
+            />
+            <MoreButton onClick={expandToggle}>{expand() ? "Contract" : "Expand"}</MoreButton>
+            <MoreButton onClick={fullContentToggle}>{fullContent() ? "Less" : "More"}</MoreButton>
+          </ContentOptions>
+        </FeedOptions>
         <NewsLinks>
           <NewsLink href="https://www.perplexity.ai/discover">
             <img src="/images/icons/perplexity.png" />

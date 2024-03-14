@@ -1,9 +1,7 @@
 import { get, map } from "lodash-es";
 
-const vergeImageRegex = /<img\s[^>]*?src\s*=\s*['\"]([^'\"]*?)['\"][^>]*?>/i;
-
 export const getVergeList = async () => {
-  const response = await fetch("https://www.theverge.com/rss/index.xml");
+  const response = await fetch("https://cdn.tihomir-selak.from.hr/rss/verge.xml");
   const text = await response.text();
   const data = new window.DOMParser().parseFromString(text, "text/xml");
   const items = data.querySelectorAll("entry");
@@ -14,7 +12,7 @@ export const getVergeList = async () => {
       url: item.querySelector("id")?.textContent || "",
       title: item.querySelector("title")?.textContent || "",
       content: content,
-      src: get(content.match(vergeImageRegex), [1], ""),
+      src: "/images/icons/verge.png",
     };
   });
 };

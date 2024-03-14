@@ -176,13 +176,13 @@ export const NewsFeed = () => {
           <MoreButton onClick={fullContentToggle}>{fullContent() ? "Less" : "More"}</MoreButton>
         </ContentOptions>
         <NewsLinks>
-          <NewsLink href="https://app.letsrecast.ai/?ref=null">
-            <img src="/images/icons/recast.png" />
-            <span>Recast</span>
-          </NewsLink>
           <NewsLink href="https://www.perplexity.ai/discover">
             <img src="/images/icons/perplexity.png" />
             <span>Discover</span>
+          </NewsLink>
+          <NewsLink href="https://app.letsrecast.ai/?ref=null">
+            <img src="/images/icons/recast.png" />
+            <span>Recast</span>
           </NewsLink>
         </NewsLinks>
       </Buttons>

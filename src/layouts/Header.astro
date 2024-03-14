@@ -165,21 +165,28 @@ import { Beats } from "../blocks/audio/Beats.tsx";
   .menu {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 4px;
+
+    svg {
+      width: 30px;
+      height: auto;
+    }
   }
 
   .open-menu {
-    width: 60px;
-    height: 60px;
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .play-preset {
-    width: 60px;
     display: flex;
     background: none;
+    align-items: center;
+    justify-content: center;
     border: none;
     cursor: pointer;
   }

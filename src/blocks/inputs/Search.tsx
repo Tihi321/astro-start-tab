@@ -1,5 +1,7 @@
 import { styled } from "solid-styled-components";
 import { createSignal } from "solid-js";
+import { getBingSearch, getDuckDuckGo, getGoogleSearch, getPhindSearchUrl } from "./utils";
+import { isEqual } from "lodash-es";
 
 const Container = styled("div")`
   width: 100%;
@@ -34,14 +36,23 @@ export const Search = () => {
   const [search, setSearch] = createSignal<string>("");
 
   const sendSearch = () => {
-    if (search()) {
-      window.open(
-        `https://www.phind.com/search?q=${encodeURIComponent(search())}&ignoreSearchResults=false`
-      );
-    } else {
-      window.open(`https://www.phind.com`);
+    const searchEngine = localStorage.getItem("search-engine") || "phind";
+
+    if (isEqual(searchEngine, "phind")) {
+      window.location.href = getPhindSearchUrl(search());
     }
 
+    if (isEqual(searchEngine, "google")) {
+      window.location.href = getGoogleSearch(search());
+    }
+
+    if (isEqual(searchEngine, "bing")) {
+      window.location.href = getBingSearch(search());
+    }
+
+    if (isEqual(searchEngine, "duckduckgo")) {
+      window.location.href = getDuckDuckGo(search());
+    }
     setSearch("");
   };
   return (

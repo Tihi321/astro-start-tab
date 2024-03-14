@@ -6,11 +6,12 @@ import Shortcuts from "../layouts/Shortcuts.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Search } from "../blocks/inputs/Search.tsx";
 import { NewsFeed } from "../blocks/news/NewsFeed.tsx";
+import { CustomShortcuts } from "../blocks/shortcuts/CustomShortcuts.tsx";
 ---
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const imageUrl = localStorage.getItem("bg-image-url") || "/images/sky.jpeg";
+    const imageUrl = localStorage.getItem("bg-image-url") || "/images/nature-bg.jpeg";
     const menuContainer = document.querySelector(".backround-image");
     menuContainer?.setAttribute("style", `background-image: url(${imageUrl})`);
   });
@@ -22,6 +23,7 @@ import { NewsFeed } from "../blocks/news/NewsFeed.tsx";
   <main>
     <Search client:only />
     <Shortcuts />
+    <CustomShortcuts client:only />
     <NewsFeed client:only />
   </main>
   <Footer />

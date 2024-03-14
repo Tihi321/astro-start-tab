@@ -7,7 +7,6 @@ const Container = styled("div")`
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  width: 320px;
 `;
 
 const AudioControls = styled("div")`

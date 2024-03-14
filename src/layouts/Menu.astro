@@ -1,5 +1,6 @@
 ---
 import { Beats } from "../blocks/audio/Beats.tsx";
+import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 ---
 
 <script>
@@ -34,7 +35,7 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     clearBackground?.addEventListener("click", () => {
       localStorage.setItem("bg-image-url", "");
       const menuContainer = document.querySelector(".backround-image");
-      menuContainer?.setAttribute("style", "background-image: url(/images/sky.jpeg)");
+      menuContainer?.setAttribute("style", "background-image: url(/images/nature-bg.jpeg)");
     });
 
     saveBackground?.addEventListener("click", () => {
@@ -50,20 +51,26 @@ import { Beats } from "../blocks/audio/Beats.tsx";
 </script>
 
 <div class="menu-container">
-  <button class="close-menu" id="close-menu">X</button>
-  <div class="music">
-    <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
-    <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
-    <Beats client:only src=`/audio/forest.mp3` name="Forest" />
-    <Beats client:only src=`/audio/rain.mp3` name="Rain" />
-    <Beats client:only src=`/audio/waves.mp3` name="Waves" />
-    <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
-  </div>
-  <div class="backround-options">
-    <button id="change-background">Change BG</button>
-    <button id="clear-background">Clear BG</button>
-    <button id="save-background">Save BG</button>
-    <button id="export-background">Export BG</button>
+  <div class="content">
+    <button class="close-menu" id="close-menu">X</button>
+    <div class="title">Search Egnines</div>
+    <SearchEngines client:only />
+    <div class="title">Background</div>
+    <div class="backround-options">
+      <button id="change-background">Change BG</button>
+      <button id="clear-background">Clear BG</button>
+      <button id="save-background">Save BG</button>
+      <button id="export-background">Export BG</button>
+    </div>
+    <div class="title">Music</div>
+    <div class="music">
+      <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
+      <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
+      <Beats client:only src=`/audio/forest.mp3` name="Forest" />
+      <Beats client:only src=`/audio/rain.mp3` name="Rain" />
+      <Beats client:only src=`/audio/waves.mp3` name="Waves" />
+      <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
+    </div>
   </div>
 </div>
 
@@ -84,6 +91,19 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     &.show {
       display: flex;
     }
+  }
+
+  .content {
+    width: 320px;
+  }
+
+  .title {
+    text-align: center;
+    position: relative;
+    margin: 8px 0;
+    font-size: 18px;
+    color: var(--light);
+    font-weight: bold;
   }
 
   .close-menu {
@@ -107,10 +127,12 @@ import { Beats } from "../blocks/audio/Beats.tsx";
   }
 
   .backround-options {
-    margin-top: 8px;
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 8px;
+    margin: 16px 0;
 
     button {
       display: block;

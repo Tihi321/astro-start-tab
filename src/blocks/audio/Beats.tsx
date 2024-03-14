@@ -7,7 +7,7 @@ const Container = styled("div")`
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  width: 120px;
+  width: 320px;
 `;
 
 const AudioControls = styled("div")`
@@ -15,6 +15,7 @@ const AudioControls = styled("div")`
   align-items: center;
   gap: 4px;
   padding: 4px;
+  width: 100%;
 `;
 
 const Name = styled("div")`

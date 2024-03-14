@@ -1,12 +1,12 @@
 ---
 import { Beats } from "../blocks/audio/Beats.tsx";
+import Menu from "./Menu.astro";
 ---
 
 <script>
   import { get } from "lodash-es";
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
-    const closeMenu = document.getElementById("close-menu");
     const playPreset = document.getElementById("play-preset");
 
     playPreset?.addEventListener("click", () => {
@@ -16,11 +16,6 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     openMenu?.addEventListener("click", () => {
       const menuContainer = document.querySelector(".menu-container");
       menuContainer?.classList.add("show");
-    });
-
-    closeMenu?.addEventListener("click", () => {
-      const menuContainer = document.querySelector(".menu-container");
-      menuContainer?.classList.remove("show");
     });
 
     fetch("https://cdn.tihomir-selak.from.hr/api/random/quote-eng.json")
@@ -51,17 +46,7 @@ import { Beats } from "../blocks/audio/Beats.tsx";
   });
 </script>
 
-<div class="menu-container">
-  <button class="close-menu" id="close-menu">X</button>
-  <div class="music">
-    <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
-    <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
-    <Beats client:only src=`/audio/forest.mp3` name="Forest" />
-    <Beats client:only src=`/audio/rain.mp3` name="Rain" />
-    <Beats client:only src=`/audio/waves.mp3` name="Waves" />
-    <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
-  </div>
-</div>
+<Menu />
 <header>
   <div class="menu">
     <button class="open-menu" id="open-menu"
@@ -115,43 +100,6 @@ import { Beats } from "../blocks/audio/Beats.tsx";
 </header>
 
 <style>
-  .menu-container {
-    position: fixed;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--backdrop);
-    z-index: 1;
-  }
-
-  .show {
-    display: flex;
-  }
-
-  .close-menu {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 60px;
-    height: 60px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: var(--light);
-    font-weight: bold;
-  }
-
-  .music {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   header {
     width: 100%;
     height: 120px;

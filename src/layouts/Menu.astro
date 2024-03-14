@@ -1,0 +1,94 @@
+---
+import { Beats } from "../blocks/audio/Beats.tsx";
+---
+
+<script>
+  import { get } from "lodash-es";
+  document.addEventListener("DOMContentLoaded", () => {
+    const closeMenu = document.getElementById("close-menu");
+    const changeBackground = document.getElementById("change-background");
+    const clearBackground = document.getElementById("clear-background");
+    const copyBackground = document.getElementById("copy-background");
+
+    closeMenu?.addEventListener("click", () => {
+      const menuContainer = document.querySelector(".menu-container");
+      menuContainer?.classList.remove("show");
+    });
+
+    changeBackground?.addEventListener("click", () => {
+      fetch("https://source.unsplash.com/random/?nature").then((response) => {
+        localStorage.setItem("bg-image-url", response.url);
+        const menuContainer = document.querySelector(".backround-image");
+        menuContainer?.setAttribute("style", `background-image: url(${response.url})`);
+      });
+    });
+
+    clearBackground?.addEventListener("click", () => {
+      localStorage.setItem("bg-image-url", "");
+      const menuContainer = document.querySelector(".backround-image");
+      menuContainer?.setAttribute("style", "background-image: url(/images/sky.jpeg)");
+    });
+
+    copyBackground?.addEventListener("click", () => {
+      const imageUrl = localStorage.getItem("bg-image-url");
+      navigator.clipboard.writeText(imageUrl);
+    });
+  });
+</script>
+
+<div class="menu-container">
+  <button class="close-menu" id="close-menu">X</button>
+  <div class="music">
+    <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
+    <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
+    <Beats client:only src=`/audio/forest.mp3` name="Forest" />
+    <Beats client:only src=`/audio/rain.mp3` name="Rain" />
+    <Beats client:only src=`/audio/waves.mp3` name="Waves" />
+    <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
+  </div>
+  <div class="backround-options">
+    <button id="change-background">Change Background</button>
+    <button id="clear-background">Clear Background</button>
+    <button id="copy-background">Copy Background</button>
+  </div>
+</div>
+
+<style>
+  .menu-container {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--backdrop);
+    z-index: 1;
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  .close-menu {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 60px;
+    height: 60px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--light);
+    font-weight: bold;
+  }
+
+  .music {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+</style>

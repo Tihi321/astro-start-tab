@@ -8,8 +8,16 @@ import { Search } from "../blocks/inputs/Search.tsx";
 import { NewsFeed } from "../blocks/news/NewsFeed.tsx";
 ---
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const imageUrl = localStorage.getItem("bg-image-url") || "/images/sky.jpeg";
+    const menuContainer = document.querySelector(".backround-image");
+    menuContainer?.setAttribute("style", `background-image: url(${imageUrl})`);
+  });
+</script>
+
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <div class="backround-image"></div>
+  <div class="backround-image" id="backround-image"></div>
   <Header />
   <main>
     <Search client:only />
@@ -26,7 +34,6 @@ import { NewsFeed } from "../blocks/news/NewsFeed.tsx";
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/images/sky.jpeg");
     background-size: cover;
     background-position: center;
     z-index: -1;

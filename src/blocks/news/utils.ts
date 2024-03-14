@@ -1,4 +1,4 @@
-import { get, map } from "lodash-es";
+import { map } from "lodash-es";
 
 export const getVergeList = async () => {
   const response = await fetch("https://cdn.tihomir-selak.from.hr/rss/verge.xml");

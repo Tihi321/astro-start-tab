@@ -4,7 +4,6 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 ---
 
 <script>
-  import { get } from "lodash-es";
   document.addEventListener("DOMContentLoaded", () => {
     const closeMenu = document.getElementById("close-menu");
     const changeBackground = document.getElementById("change-background");
@@ -39,12 +38,13 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     });
 
     saveBackground?.addEventListener("click", () => {
-      const imageUrl = navigator.clipboard.readText(imageUrl);
-      localStorage.setItem("bg-image-url", imageUrl);
+      navigator.clipboard.readText().then((text) => {
+        localStorage.setItem("bg-image-url", text);
+      });
     });
 
     exportBackground?.addEventListener("click", () => {
-      const imageUrl = localStorage.getItem("bg-image-url");
+      const imageUrl = localStorage.getItem("bg-image-url") || "";
       navigator.clipboard.writeText(imageUrl);
     });
   });

@@ -8,7 +8,15 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     const closeMenu = document.getElementById("close-menu");
     const changeBackground = document.getElementById("change-background");
     const clearBackground = document.getElementById("clear-background");
-    const copyBackground = document.getElementById("copy-background");
+    const saveBackground = document.getElementById("save-background");
+    const exportBackground = document.getElementById("export-background");
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        const menuContainer = document.querySelector(".menu-container");
+        menuContainer?.classList.remove("show");
+      }
+    });
 
     closeMenu?.addEventListener("click", () => {
       const menuContainer = document.querySelector(".menu-container");
@@ -29,7 +37,12 @@ import { Beats } from "../blocks/audio/Beats.tsx";
       menuContainer?.setAttribute("style", "background-image: url(/images/sky.jpeg)");
     });
 
-    copyBackground?.addEventListener("click", () => {
+    saveBackground?.addEventListener("click", () => {
+      const imageUrl = navigator.clipboard.readText(imageUrl);
+      localStorage.setItem("bg-image-url", imageUrl);
+    });
+
+    exportBackground?.addEventListener("click", () => {
       const imageUrl = localStorage.getItem("bg-image-url");
       navigator.clipboard.writeText(imageUrl);
     });
@@ -47,9 +60,10 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
   </div>
   <div class="backround-options">
-    <button id="change-background">Change Background</button>
-    <button id="clear-background">Clear Background</button>
-    <button id="copy-background">Copy Background</button>
+    <button id="change-background">Change BG</button>
+    <button id="clear-background">Clear BG</button>
+    <button id="save-background">Save BG</button>
+    <button id="export-background">Export BG</button>
   </div>
 </div>
 
@@ -90,5 +104,24 @@ import { Beats } from "../blocks/audio/Beats.tsx";
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+
+  .backround-options {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    button {
+      display: block;
+      background: var(--primary);
+      color: var(--light);
+      cursor: pointer;
+      font-size: 12px;
+      background: var(--dark);
+      border-radius: 8px;
+      padding: 8px;
+      border: none;
+    }
   }
 </style>

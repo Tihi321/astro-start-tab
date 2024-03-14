@@ -6,14 +6,20 @@ import Menu from "./Menu.astro";
   import { get } from "lodash-es";
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
-    const playPreset = document.getElementById("play-preset");
+    const playMusic = document.getElementById("play-music");
+    const stopMusic = document.getElementById("stop-music");
 
-    playPreset?.addEventListener("click", () => {
+    playMusic?.addEventListener("click", () => {
       document.dispatchEvent(new CustomEvent("preset:play"));
+    });
+
+    stopMusic?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:stop"));
     });
 
     openMenu?.addEventListener("click", () => {
       const menuContainer = document.querySelector(".menu-container");
+      document.body.classList.add("overflow");
       menuContainer?.classList.add("show");
     });
 
@@ -64,12 +70,8 @@ import Menu from "./Menu.astro";
           fill="#fff"></path></svg
       ></button
     >
-    <button class="play-preset" id="play-preset">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M0 0h24v24H0z" fill="none"></path>
-        <path d="M9 10.222L9 19.778 16.481 15 9 10.222z" fill="#ffffff"></path>
-      </svg>
-    </button>
+    <button class="stop-music" id="stop-music"></button>
+    <button class="play-music" id="play-music"></button>
   </div>
 
   <div class="quote-of-the-day">
@@ -112,7 +114,24 @@ import Menu from "./Menu.astro";
   .menu {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 4px;
+
+    .play-music {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      background-image: linear-gradient(to right, var(--light), var(--light));
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      transform: rotate(90deg);
+    }
+
+    .stop-music {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      background-color: var(--light);
+    }
 
     svg {
       width: 30px;
@@ -127,15 +146,6 @@ import Menu from "./Menu.astro";
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .play-preset {
-    display: flex;
-    background: none;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
   }
 
   .quote-of-the-day {

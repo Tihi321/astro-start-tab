@@ -29,6 +29,10 @@ body {
 	flex-direction: column;
   align-items: center;
 
+	&.overflow {
+		overflow: hidden;
+	}
+
 	@media (min-width: 769px) {
 		font-size: 18px;
 		line-height: 1.7;

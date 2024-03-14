@@ -10,17 +10,34 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     const clearBackground = document.getElementById("clear-background");
     const saveBackground = document.getElementById("save-background");
     const exportBackground = document.getElementById("export-background");
+    const loadPReset = document.getElementById("load-preset");
+    const stopPreset = document.getElementById("stop-preset");
+    const clearPreset = document.getElementById("clear-preset");
+
+    loadPReset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:play"));
+    });
+
+    stopPreset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:stop"));
+    });
+
+    clearPreset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:clear"));
+    });
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
         const menuContainer = document.querySelector(".menu-container");
         menuContainer?.classList.remove("show");
+        document.body.classList.remove("overflow");
       }
     });
 
     closeMenu?.addEventListener("click", () => {
       const menuContainer = document.querySelector(".menu-container");
       menuContainer?.classList.remove("show");
+      document.body.classList.remove("overflow");
     });
 
     changeBackground?.addEventListener("click", () => {
@@ -56,7 +73,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     <div class="title">Search Egnines</div>
     <SearchEngines client:only />
     <div class="title">Background</div>
-    <div class="backround-options">
+    <div class="options">
       <button id="change-background">Change BG</button>
       <button id="clear-background">Clear BG</button>
       <button id="save-background">Save BG</button>
@@ -70,6 +87,11 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
       <Beats client:only src=`/audio/rain.mp3` name="Rain" />
       <Beats client:only src=`/audio/waves.mp3` name="Waves" />
       <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
+    </div>
+    <div class="options">
+      <button id="load-preset">Load</button>
+      <button id="stop-preset">Stop</button>
+      <button id="clear-preset">Clear</button>
     </div>
   </div>
 </div>
@@ -126,7 +148,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     gap: 8px;
   }
 
-  .backround-options {
+  .options {
     width: 100%;
     display: flex;
     flex-direction: row;

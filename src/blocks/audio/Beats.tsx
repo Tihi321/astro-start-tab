@@ -73,6 +73,24 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
         setAudioVolume(volume);
       }
     });
+    document.addEventListener("preset:stop", () => {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.volume = 0;
+        setAudioVolume(0);
+      }
+    });
+    document.addEventListener("preset:clear", () => {
+      if (audioElement) {
+        const beats = localStorage.getItem("beats");
+        const beatsVolume = beats ? JSON.parse(beats) : {};
+        beatsVolume[toLower(name)] = 0;
+        localStorage.setItem("beats", JSON.stringify(beatsVolume));
+        audioElement.pause();
+        audioElement.volume = 0;
+        setAudioVolume(0);
+      }
+    });
   });
 
   const onChange = (event: any) => {

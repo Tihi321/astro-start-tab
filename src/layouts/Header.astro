@@ -1,0 +1,249 @@
+---
+import { Beats } from "../blocks/audio/Beats.tsx";
+---
+
+<script>
+  import { get } from "lodash-es";
+  document.addEventListener("DOMContentLoaded", () => {
+    const openMenu = document.getElementById("open-menu");
+    const closeMenu = document.getElementById("close-menu");
+    const playPreset = document.getElementById("play-preset");
+
+    playPreset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:play"));
+    });
+
+    openMenu?.addEventListener("click", () => {
+      const menuContainer = document.querySelector(".menu-container");
+      menuContainer?.classList.add("show");
+    });
+
+    closeMenu?.addEventListener("click", () => {
+      const menuContainer = document.querySelector(".menu-container");
+      menuContainer?.classList.remove("show");
+    });
+
+    fetch("https://cdn.tihomir-selak.from.hr/api/random/quote-eng.json")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        document
+          .getElementById("quote")
+          ?.insertAdjacentText("beforeend", get(data, ["data", "text"], ""));
+        document
+          .getElementById("author")
+          ?.insertAdjacentText("beforeend", get(data, ["data", "author"], ""));
+      });
+
+    fetch("https://cdn.tihomir-selak.from.hr/api/random/vocabulary-word-eng.json")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        document
+          .getElementById("word")
+          ?.insertAdjacentText("beforeend", get(data, ["data", "name"], ""));
+        document
+          .getElementById("meaning")
+          ?.insertAdjacentText("beforeend", get(data, ["data", "detail"], ""));
+      });
+  });
+</script>
+
+<div class="menu-container">
+  <button class="close-menu" id="close-menu">X</button>
+  <div class="music">
+    <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
+    <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
+    <Beats client:only src=`/audio/forest.mp3` name="Forest" />
+    <Beats client:only src=`/audio/rain.mp3` name="Rain" />
+    <Beats client:only src=`/audio/waves.mp3` name="Waves" />
+    <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
+  </div>
+</div>
+<header>
+  <div class="menu">
+    <button class="open-menu" id="open-menu"
+      ><svg
+        class="cog-icon svelte-eyvwnt"
+        width="38"
+        height="38"
+        viewBox="0 0 38 38"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        ><path
+          class="cog-icon-path svelte-eyvwnt"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M16 0a1 1 0 0 0-1 1v5.458a13.4 13.4 0 0 0-2.12.764L9.1 3.444a1 1 0 0 0-1.414 0L3.444 7.686a1 1 0 0 0 0 1.415l3.468 3.468A13.439 13.439 0 0 0 5.768 15H1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h4.458c.262.979.631 1.913 1.094 2.79L3.444 28.9a1 1 0 0 0 0 1.414l4.242 4.242a1 1 0 0 0 1.415 0l3.108-3.108c.878.463 1.812.832 2.791 1.094V37a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4.768a13.436 13.436 0 0 0 2.43-1.145l3.47 3.47a1 1 0 0 0 1.414 0l4.242-4.243a1 1 0 0 0 0-1.415l-3.778-3.778c.311-.679.568-1.387.764-2.121H37a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-5.768a13.41 13.41 0 0 0-.784-1.79l4.108-4.11a1 1 0 0 0 0-1.414l-4.242-4.242a1 1 0 0 0-1.415 0l-4.108 4.108A13.427 13.427 0 0 0 23 6.768V1a1 1 0 0 0-1-1h-6Zm3 28a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"
+          fill="#fff"></path></svg
+      ></button
+    >
+    <button class="play-preset" id="play-preset">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M9 10.222L9 19.778 16.481 15 9 10.222z" fill="#ffffff"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="quote-of-the-day">
+    <div class="quote" id="quote"></div>
+    <div class="author" id="author"></div>
+  </div>
+  <div class="info">
+    <div class="weather">
+      <iframe
+        src="https://www.meteoblue.com/en/weather/widget/three/osijek_croatia_3193935?geoloc=fixed&nocurrent=0&noforecast=0&noforecast=1&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=dark"
+        allowtransparency="true"
+        sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
+      ></iframe><div>
+        <!-- DO NOT REMOVE THIS LINK -->
+        <a
+          href="https://www.meteoblue.com/en/weather/week/osijek_croatia_3193935?utm_source=weather_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget"
+          target="_blank"
+          rel="noopener">meteoblue</a
+        >
+      </div>
+    </div>
+    <div class="word-of-the-day">
+      <div class="word" id="word"></div> -
+      <div class="meaning" id="meaning"></div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .menu-container {
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--backdrop);
+    z-index: 1;
+  }
+
+  .show {
+    display: flex;
+  }
+
+  .close-menu {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 60px;
+    height: 60px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--light);
+    font-weight: bold;
+  }
+
+  .music {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  header {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .open-menu {
+    width: 60px;
+    height: 60px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .play-preset {
+    width: 60px;
+    display: flex;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .quote-of-the-day {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .quote {
+      &::before {
+        content: "“";
+        margin-right: 4px;
+      }
+      &::after {
+        content: "”";
+        margin-left: 4px;
+      }
+    }
+
+    .author {
+      font-weight: bold;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+  }
+
+  .word-of-the-day {
+    display: flex;
+    font-size: 14px;
+    gap: 2px;
+
+    .word {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .meaning {
+      text-transform: capitalize;
+    }
+  }
+
+  .weather {
+    position: relative;
+    width: 470px;
+    height: 140px;
+    transform: scale(0.6);
+    overflow: hidden;
+
+    iframe {
+      width: 100%;
+      height: 220px;
+      border: none;
+    }
+
+    a {
+      display: none;
+    }
+  }
+</style>

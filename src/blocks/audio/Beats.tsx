@@ -1,5 +1,5 @@
 import { toLower } from "lodash-es";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 
 const Container = styled("div")`
@@ -63,8 +63,8 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
     }
   });
 
-  createEffect(() => {
-    document.addEventListener("play-preset", () => {
+  onMount(() => {
+    document.addEventListener("preset:play", () => {
       const beats = localStorage.getItem("beats");
       const beatsVolume = beats ? JSON.parse(beats) : {};
       const volume = beatsVolume[toLower(name)] || 0;

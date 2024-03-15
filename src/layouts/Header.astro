@@ -32,7 +32,7 @@ import Menu from "./Menu.astro";
     });
 
     getRandomWord().then((word) => {
-      document.getElementById("word")?.insertAdjacentText("beforeend", get(word, ["word"], ""));
+      document.getElementById("word")?.insertAdjacentText("beforeend", get(word, ["name"], ""));
       document
         .getElementById("meaning")
         ?.insertAdjacentText("beforeend", get(word, ["meaning"], ""));

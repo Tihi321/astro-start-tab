@@ -5,6 +5,7 @@ import { FeedList } from "./FeedList";
 import { setFeedList, search, setSearch } from "./store";
 import { getBugList, getTechCrunch, getVergeList } from "./utils";
 import { getSearchPresets, removeSearchPreset, setSearchPreset } from "../inputs/utils";
+import { i } from "../../../dist/_astro/web.x-obQ4LW";
 
 const Container = styled("div")`
   width: 100%;
@@ -300,6 +301,11 @@ export const NewsFeed = () => {
               <SearchPresetButton
                 onClick={() => {
                   setSearch({ value: get(searchPresets(), [name], "") });
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    setSearch({ value: "" });
+                  }
                 }}
               >
                 {name}

@@ -23,7 +23,6 @@ const Shortcut = styled("div")`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  height: fit-content;
   gap: 4px;
   height: 100%;
 

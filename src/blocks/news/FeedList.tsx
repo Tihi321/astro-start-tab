@@ -1,7 +1,8 @@
 import { filter, map, includes, toLower } from "lodash-es";
-import { createSignal, onMount, createEffect } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { feedList, search } from "./store";
+import { getFilteredSearch } from "./utils";
 
 const Container = styled("div")`
   margin: auto;
@@ -103,40 +104,30 @@ export const FeedList = () => {
     <Container>
       {expand() && (
         <ExpandedFeed>
-          {map(
-            filter(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
-              return includes(toLower(news.title), toLower(search.value));
-            }),
-            (news) => {
-              return (
-                <article>
-                  <h2 class="title">
-                    <a href={news.url} target="_blank">
-                      {news.title}
-                    </a>
-                  </h2>
-                  <p innerHTML={news.content}></p>
-                </article>
-              );
-            }
-          )}
+          {map(getFilteredSearch(feedList, search.value, fullContent()), (news) => {
+            return (
+              <article>
+                <h2 class="title">
+                  <a href={news.url} target="_blank">
+                    {news.title}
+                  </a>
+                </h2>
+                <p innerHTML={news.content}></p>
+              </article>
+            );
+          })}
         </ExpandedFeed>
       )}
       {!expand() && (
         <Feed>
-          {map(
-            filter(fullContent() ? feedList : feedList.slice(0, 10), (news) => {
-              return includes(toLower(news.title), toLower(search.value));
-            }),
-            (news) => {
-              return (
-                <a href={news.url} target="_blank">
-                  <img src={news.src} alt={news.title} />
-                  <span>{news.title}</span>
-                </a>
-              );
-            }
-          )}
+          {map(getFilteredSearch(feedList, search.value, fullContent()), (news) => {
+            return (
+              <a href={news.url} target="_blank">
+                <img src={news.src} alt={news.title} />
+                <span>{news.title}</span>
+              </a>
+            );
+          })}
         </Feed>
       )}
     </Container>

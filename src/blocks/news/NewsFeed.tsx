@@ -1,9 +1,10 @@
-import { isEqual } from "lodash-es";
-import { createSignal, createEffect } from "solid-js";
+import { get, isEqual, map } from "lodash-es";
+import { createSignal, createEffect, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { FeedList } from "./FeedList";
 import { setFeedList, search, setSearch } from "./store";
 import { getBugList, getTechCrunch, getVergeList } from "./utils";
+import { getSearchPresets, removeSearchPreset, setSearchPreset } from "../inputs/utils";
 
 const Container = styled("div")`
   width: 100%;
@@ -118,6 +119,63 @@ const Content = styled("div")`
   margin-top: 16px;
 `;
 
+const SearchPresetInput = styled("input")`
+  outline: none;
+  text-align: center;
+  border: 1px solid var(--light);
+  border-radius: 4px;
+  background: var(--dark);
+  color: var(--text);
+  width: 80px;
+  height: 30px;
+
+  &::placeholder {
+    color: var(--text);
+  }
+`;
+
+const SearchPresets = styled("div")`
+  display: flex;
+  gap: 4px;
+  flex-direction: row;
+`;
+
+const SearchPreset = styled("div")`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 4px;
+
+  &:hover {
+    .remove {
+      opacity: 1;
+    }
+  }
+`;
+
+const SearchPresetButton = styled("button")`
+  border: 1px solid var(--light);
+  background: var(--dark);
+  color: var(--text);
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 60px;
+  text-align: center;
+`;
+
+const RemovePresetButton = styled("button")`
+  cursor: pointer;
+  width: 10px;
+  height: 100%;
+  border: none;
+  padding: 0;
+  background: var(--link-hover);
+  opacity: 0;
+  transition: opacity 0.3s;
+`;
+
 const NEWS_LIST = {
   BUG: "bug",
   TECHCRUNCH: "techcrunch",
@@ -127,7 +185,14 @@ const NEWS_LIST = {
 export const NewsFeed = () => {
   const [selected, setSelected] = createSignal(NEWS_LIST.BUG);
   const [expand, setExpand] = createSignal(false);
+  const [searchPreset, saveSearchPreset] = createSignal("");
+  const [searchPresets, saveSearchPresets] = createSignal({});
   const [fullContent, setFullContent] = createSignal(false);
+
+  onMount(() => {
+    const presets = getSearchPresets();
+    saveSearchPresets(presets);
+  });
 
   const expandToggle = () => {
     const expanded = !expand();
@@ -199,6 +264,20 @@ export const NewsFeed = () => {
               onInput={(e: any) => setSearch({ value: e.target.value })}
               placeholder="Search"
             />
+            <SearchPresetInput
+              value={searchPreset()}
+              onInput={(event: any) => saveSearchPreset(event.target.value)}
+              onKeyDown={(event: any) => {
+                if (event.key === "Enter") {
+                  const name = searchPreset();
+                  const preset = search.value;
+                  const presets = setSearchPreset(name, preset);
+                  saveSearchPresets(presets);
+                  saveSearchPreset("");
+                }
+              }}
+              placeholder="Name"
+            />
             <MoreButton onClick={expandToggle}>{expand() ? "Contract" : "Expand"}</MoreButton>
             <MoreButton onClick={fullContentToggle}>{fullContent() ? "Less" : "More"}</MoreButton>
           </ContentOptions>
@@ -214,6 +293,30 @@ export const NewsFeed = () => {
           </NewsLink>
         </NewsLinks>
       </Buttons>
+      <SearchPresets>
+        {map(Object.keys(searchPresets()), (name: string) => {
+          return (
+            <SearchPreset>
+              <SearchPresetButton
+                onClick={() => {
+                  setSearch({ value: get(searchPresets(), [name], "") });
+                }}
+              >
+                {name}
+              </SearchPresetButton>
+              <RemovePresetButton
+                class="remove"
+                onClick={() => {
+                  const updatedPresets = removeSearchPreset(name);
+                  saveSearchPresets(updatedPresets);
+                }}
+              >
+                -
+              </RemovePresetButton>
+            </SearchPreset>
+          );
+        })}
+      </SearchPresets>
       <Content>
         <FeedList />
       </Content>

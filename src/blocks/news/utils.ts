@@ -1,4 +1,4 @@
-import { map, get } from "lodash-es";
+import { map, get, filter, includes, toLower } from "lodash-es";
 import { extractLocalData, getSaveLocalData } from "../../utils/local";
 
 const setLocalNews = (name: string, data: any) => {
@@ -87,4 +87,13 @@ export const getTechCrunch = async () => {
 
     return news;
   }
+};
+
+export const getFilteredSearch = (list: any, search: string, full: boolean) => {
+  return filter(full ? list : list.slice(0, 10), (news) => {
+    return (
+      includes(toLower(get(news, ["title"], "")), toLower(search)) ||
+      includes(toLower(get(news, ["content"], "")), toLower(search))
+    );
+  });
 };

@@ -10,13 +10,14 @@ const Container = styled("div")`
 
 const Feed = styled("div")`
   width: 100%;
-  height: 400px;
+  height: 380px;
   background: var(--dark);
   padding: 8px;
   border-radius: 8px;
   overflow: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 60px;
   gap: 8px;
   align-items: flex-start;
 

@@ -264,6 +264,11 @@ export const NewsFeed = () => {
               value={search.value}
               onInput={(e: any) => setSearch({ value: e.target.value })}
               placeholder="Search"
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  setSearch({ value: "" });
+                }
+              }}
             />
             <SearchPresetInput
               value={searchPreset()}
@@ -301,11 +306,6 @@ export const NewsFeed = () => {
               <SearchPresetButton
                 onClick={() => {
                   setSearch({ value: get(searchPresets(), [name], "") });
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    setSearch({ value: "" });
-                  }
                 }}
               >
                 {name}

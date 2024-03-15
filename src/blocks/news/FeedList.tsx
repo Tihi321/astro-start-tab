@@ -1,4 +1,4 @@
-import { filter, map, includes, toLower } from "lodash-es";
+import { map } from "lodash-es";
 import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { feedList, search } from "./store";

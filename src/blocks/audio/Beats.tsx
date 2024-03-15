@@ -1,6 +1,7 @@
 import { toLower } from "lodash-es";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
+import { getLocalBeatsPreset, setLocalBeatsPreset } from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -64,31 +65,46 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
 
   onMount(() => {
     document.addEventListener("preset:play", () => {
-      const beats = localStorage.getItem("beats");
-      const beatsVolume = beats ? JSON.parse(beats) : {};
-      const volume = beatsVolume[toLower(name)] || 0;
-      if (volume !== 0 && audioElement) {
-        audioElement.play();
-        audioElement.volume = volume / 100;
-        setAudioVolume(volume);
+      const volume = getLocalBeatsPreset(name);
+      if (audioElement && audioElement.paused) {
+        if (volume === 0) {
+          setAudioVolume(0);
+          audioElement.volume = 0;
+          audioElement.pause();
+        } else {
+          setAudioVolume(volume);
+          audioElement.volume = audioVolume() / 100;
+          audioElement.play();
+        }
       }
     });
     document.addEventListener("preset:stop", () => {
       if (audioElement) {
-        audioElement.pause();
-        audioElement.volume = 0;
         setAudioVolume(0);
+        audioElement.volume = 0;
+        audioElement.pause();
+      }
+    });
+    document.addEventListener("preset:toggle", () => {
+      if (audioElement) {
+        if (audioElement.paused) {
+          const volume = getLocalBeatsPreset(name);
+          setAudioVolume(volume);
+          audioElement.volume = audioVolume() / 100;
+          audioElement.play();
+        } else {
+          setAudioVolume(0);
+          audioElement.volume = 0;
+          audioElement.pause();
+        }
       }
     });
     document.addEventListener("preset:clear", () => {
       if (audioElement) {
-        const beats = localStorage.getItem("beats");
-        const beatsVolume = beats ? JSON.parse(beats) : {};
-        beatsVolume[toLower(name)] = 0;
-        localStorage.setItem("beats", JSON.stringify(beatsVolume));
-        audioElement.pause();
-        audioElement.volume = 0;
+        setLocalBeatsPreset(name, 0);
         setAudioVolume(0);
+        audioElement.volume = 0;
+        audioElement.pause();
       }
     });
   });
@@ -96,18 +112,14 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
   const onChange = (event: any) => {
     if (audioElement) {
       const volume = Number(event.currentTarget.value);
-      const beats = localStorage.getItem("beats");
-      const beatsVolume = beats ? JSON.parse(beats) : {};
-      beatsVolume[toLower(name)] = volume;
-      localStorage.setItem("beats", JSON.stringify(beatsVolume));
-
       setAudioVolume(volume);
       if (volume === 0) {
+        audioElement.volume = 0;
         audioElement.pause();
       } else {
+        audioElement.volume = audioVolume() / 100;
         audioElement.play();
       }
-      audioElement.volume = volume / 100;
     }
   };
 
@@ -118,8 +130,32 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
       </audio>
       <Name>{name}</Name>
       <AudioControls>
-        <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
-        <Input type="number" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
+        <Slider
+          type="range"
+          min="0"
+          max="10"
+          step="1"
+          value={audioVolume()}
+          onChange={onChange}
+          onBlur={() => {
+            if (audioElement) {
+              setLocalBeatsPreset(name, audioVolume());
+            }
+          }}
+        />
+        <Input
+          type="number"
+          min="0"
+          max="10"
+          step="1"
+          value={audioVolume()}
+          onChange={onChange}
+          onBlur={() => {
+            if (audioElement) {
+              setLocalBeatsPreset(name, audioVolume());
+            }
+          }}
+        />
       </AudioControls>
     </Container>
   );

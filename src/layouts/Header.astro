@@ -18,6 +18,24 @@ import Menu from "./Menu.astro";
       document.dispatchEvent(new CustomEvent("preset:stop"));
     });
 
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && (event.key === "m" || event.key === "M")) {
+        const menuContainer = document.querySelector(".menu-container");
+        if (menuContainer?.classList.contains("show")) {
+          document.body.classList.remove("overflow");
+          menuContainer?.classList.remove("show");
+        } else {
+          document.body.classList.add("overflow");
+          menuContainer?.classList.add("show");
+        }
+      }
+
+      if (event.ctrlKey && event.code === "Comma") {
+        console.log("toggle preset");
+        document.dispatchEvent(new CustomEvent("preset:toggle"));
+      }
+    });
+
     openMenu?.addEventListener("click", () => {
       const menuContainer = document.querySelector(".menu-container");
       document.body.classList.add("overflow");

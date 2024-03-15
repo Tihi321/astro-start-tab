@@ -10,12 +10,17 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     const clearBackground = document.getElementById("clear-background");
     const saveBackground = document.getElementById("save-background");
     const exportBackground = document.getElementById("export-background");
+    const savePReset = document.getElementById("save-preset");
     const loadPReset = document.getElementById("load-preset");
     const stopPreset = document.getElementById("stop-preset");
     const clearPreset = document.getElementById("clear-preset");
 
+    savePReset?.addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("preset:save"));
+    });
+
     loadPReset?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("preset:play"));
+      document.dispatchEvent(new CustomEvent("preset:load"));
     });
 
     stopPreset?.addEventListener("click", () => {
@@ -89,9 +94,10 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
       <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
     </div>
     <div class="options">
+      <button id="save-preset">Save</button>
+      <button id="clear-preset">Clear</button>
       <button id="load-preset">Load</button>
       <button id="stop-preset">Stop</button>
-      <button id="clear-preset">Clear</button>
     </div>
   </div>
 </div>

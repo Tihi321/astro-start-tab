@@ -1,4 +1,3 @@
-import { toLower } from "lodash-es";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { getLocalBeatsPreset, setLocalBeatsPreset } from "./utils";
@@ -64,17 +63,23 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
   });
 
   onMount(() => {
-    document.addEventListener("preset:play", () => {
+    document.addEventListener("preset:load", () => {
       const volume = getLocalBeatsPreset(name);
-      if (audioElement && audioElement.paused) {
-        if (volume === 0) {
-          setAudioVolume(0);
-          audioElement.volume = 0;
-          audioElement.pause();
-        } else {
+      if (audioElement) {
+        if (audioElement.paused) {
           setAudioVolume(volume);
           audioElement.volume = audioVolume() / 100;
           audioElement.play();
+        } else {
+          if (volume === 0) {
+            setAudioVolume(0);
+            audioElement.volume = 0;
+            audioElement.pause();
+          } else {
+            setAudioVolume(volume);
+            audioElement.volume = audioVolume() / 100;
+            audioElement.play();
+          }
         }
       }
     });
@@ -83,6 +88,11 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
         setAudioVolume(0);
         audioElement.volume = 0;
         audioElement.pause();
+      }
+    });
+    document.addEventListener("preset:save", () => {
+      if (audioElement) {
+        setLocalBeatsPreset(name, audioVolume());
       }
     });
     document.addEventListener("preset:toggle", () => {
@@ -130,32 +140,8 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
       </audio>
       <Name>{name}</Name>
       <AudioControls>
-        <Slider
-          type="range"
-          min="0"
-          max="10"
-          step="1"
-          value={audioVolume()}
-          onChange={onChange}
-          onBlur={() => {
-            if (audioElement) {
-              setLocalBeatsPreset(name, audioVolume());
-            }
-          }}
-        />
-        <Input
-          type="number"
-          min="0"
-          max="10"
-          step="1"
-          value={audioVolume()}
-          onChange={onChange}
-          onBlur={() => {
-            if (audioElement) {
-              setLocalBeatsPreset(name, audioVolume());
-            }
-          }}
-        />
+        <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
+        <Input type="number" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
       </AudioControls>
     </Container>
   );

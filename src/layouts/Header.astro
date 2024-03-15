@@ -4,6 +4,7 @@ import Menu from "./Menu.astro";
 
 <script>
   import { get } from "lodash-es";
+  import { getRandomQuote, getRandomWord } from "../utils/random";
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
     const playMusic = document.getElementById("play-music");
@@ -23,31 +24,19 @@ import Menu from "./Menu.astro";
       menuContainer?.classList.add("show");
     });
 
-    fetch("https://cdn.tihomir-selak.from.hr/api/random/quote-eng.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        document
-          .getElementById("quote")
-          ?.insertAdjacentText("beforeend", get(data, ["data", "text"], ""));
-        document
-          .getElementById("author")
-          ?.insertAdjacentText("beforeend", get(data, ["data", "author"], ""));
-      });
+    getRandomQuote().then((quote) => {
+      document.getElementById("quote")?.insertAdjacentText("beforeend", get(quote, ["text"], ""));
+      document
+        .getElementById("author")
+        ?.insertAdjacentText("beforeend", get(quote, ["author"], ""));
+    });
 
-    fetch("https://cdn.tihomir-selak.from.hr/api/random/vocabulary-word-eng.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        document
-          .getElementById("word")
-          ?.insertAdjacentText("beforeend", get(data, ["data", "name"], ""));
-        document
-          .getElementById("meaning")
-          ?.insertAdjacentText("beforeend", get(data, ["data", "detail"], ""));
-      });
+    getRandomWord().then((word) => {
+      document.getElementById("word")?.insertAdjacentText("beforeend", get(word, ["word"], ""));
+      document
+        .getElementById("meaning")
+        ?.insertAdjacentText("beforeend", get(word, ["meaning"], ""));
+    });
   });
 </script>
 

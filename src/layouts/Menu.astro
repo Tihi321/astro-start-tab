@@ -1,5 +1,5 @@
 ---
-import { Beats } from "../blocks/audio/Beats.tsx";
+import { Music } from "../blocks/audio/Music.tsx";
 import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 ---
 
@@ -85,14 +85,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
       <button id="export-background">Export BG</button>
     </div>
     <div class="title">Music</div>
-    <div class="music">
-      <Beats client:only src=`/audio/just-relax.mp3` name="Relax" />
-      <Beats client:only src=`/audio/lofi-beats.mp3` name="Lofy" />
-      <Beats client:only src=`/audio/forest.mp3` name="Forest" />
-      <Beats client:only src=`/audio/rain.mp3` name="Rain" />
-      <Beats client:only src=`/audio/waves.mp3` name="Waves" />
-      <Beats client:only src=`/audio/campfire.mp3` name="Campfire" />
-    </div>
+    <Music client:only />
     <div class="options">
       <button id="save-preset">Save</button>
       <button id="clear-preset">Clear</button>
@@ -122,7 +115,8 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
   }
 
   .content {
-    width: 320px;
+    max-width: 800px;
+    width: 100%;
   }
 
   .title {
@@ -146,12 +140,6 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     font-size: 24px;
     color: var(--light);
     font-weight: bold;
-  }
-
-  .music {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
   }
 
   .options {

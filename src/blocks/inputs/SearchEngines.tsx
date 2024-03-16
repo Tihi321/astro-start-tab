@@ -1,8 +1,17 @@
 import { styled } from "solid-styled-components";
 import { createSignal, onMount } from "solid-js";
 
+const Container = styled("div")`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
 const Select = styled("select")`
   padding: 8px;
+  max-width: 250px;
   width: 100%;
 `;
 
@@ -11,25 +20,55 @@ const Option = styled("option")`
 `;
 
 export const SearchEngines = () => {
-  const [selected, setSelected] = createSignal<string>("");
+  const [selectedTextSearchEngine, setSelectedTextSearchEngine] = createSignal<string>("");
+  const [selectedVideoSearchEngine, setSelectedVideoSearchEngine] = createSignal<string>("");
+  const [selectedMusicSearchEngine, setSelectedMusicSearchEngine] = createSignal<string>("");
 
   onMount(() => {
-    const searchEngine = localStorage.getItem("search-engine") || "phind";
-    setSelected(searchEngine);
+    setSelectedTextSearchEngine(localStorage.getItem("text-search-engine") || "phind");
+    setSelectedVideoSearchEngine(localStorage.getItem("video-search-engine") || "youtube");
+    setSelectedMusicSearchEngine(localStorage.getItem("music-search-engine") || "soundcloud");
   });
 
   return (
-    <Select
-      onChange={(event) => {
-        setSelected(event.currentTarget.value);
-        localStorage.setItem("search-engine", event.currentTarget.value);
-      }}
-      value={selected()}
-    >
-      <Option value="phind">Phind</Option>
-      <Option value="google">Google</Option>
-      <Option value="bing">Bing</Option>
-      <Option value="duckduckgo">DuckDuckGo</Option>
-    </Select>
+    <Container>
+      <Select
+        onChange={(event) => {
+          setSelectedTextSearchEngine(event.currentTarget.value);
+          localStorage.setItem("text-search-engine", event.currentTarget.value);
+        }}
+        value={selectedTextSearchEngine()}
+      >
+        <Option value="phind">Phind</Option>
+        <Option value="google">Google</Option>
+        <Option value="bing">Bing</Option>
+        <Option value="duckduckgo">DuckDuckGo</Option>
+      </Select>
+      <Select
+        onChange={(event) => {
+          setSelectedVideoSearchEngine(event.currentTarget.value);
+          localStorage.setItem("video-search-engine", event.currentTarget.value);
+        }}
+        value={selectedVideoSearchEngine()}
+      >
+        <Option value="youtube">Youtube</Option>
+        <Option value="skillshare">Skillshare</Option>
+        <Option value="udemy">Udemy</Option>
+        <Option value="zenva">Zenva</Option>
+        <Option value="gamedev">GameDev</Option>
+      </Select>
+      <Select
+        onChange={(event) => {
+          setSelectedMusicSearchEngine(event.currentTarget.value);
+          localStorage.setItem("music-search-engine", event.currentTarget.value);
+        }}
+        value={selectedMusicSearchEngine()}
+      >
+        <Option value="soundcloud">SoundCloud</Option>
+        <Option value="spotify">Spotify</Option>
+        <Option value="youtubemusic">Youtube Music</Option>
+        <Option value="pixabay">Pixabay</Option>
+      </Select>
+    </Container>
   );
 };

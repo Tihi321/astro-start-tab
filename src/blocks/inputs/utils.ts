@@ -43,3 +43,57 @@ export const getDuckDuckGo = (search: string) => {
     ? `https://duckduckgo.com/?va=e&t=ho&q=${encodeURIComponent(search)}`
     : `https://www.duckduckgo.com`;
 };
+
+export const getYoutubeSearch = (search: string) => {
+  return search
+    ? `https://www.youtube.com/results?search_query=${encodeURIComponent(search)}`
+    : `https://www.youtube.com`;
+};
+
+export const getSkillShareSearch = (search: string) => {
+  return search
+    ? `https://www.skillshare.com/en/search?query=${encodeURIComponent(search)}`
+    : `https://www.skillshare.com`;
+};
+
+export const getUdemySearch = (search: string) => {
+  return search
+    ? `https://www.udemy.com/courses/search/?src=ukw&q=${encodeURIComponent(search)}`
+    : `https://www.udemy.com`;
+};
+
+export const getZenvaSearch = (search: string) => {
+  return search
+    ? `https://academy.zenva.com/search/?s=${encodeURIComponent(search)}`
+    : `https://www.udemy.com`;
+};
+
+export const getGameDevSearch = (search: string) => {
+  return search
+    ? `https://www.gamedev.tv/courses/?query=${encodeURIComponent(search)}`
+    : `https://www.gamedev.tv`;
+};
+
+export const getSoundCloudSearch = (search: string) => {
+  return search
+    ? `https://soundcloud.com/search?q=${encodeURIComponent(search)}`
+    : `https://www.soundcloud.com`;
+};
+
+export const getSpotifySearch = (search: string) => {
+  return search
+    ? `https://open.spotify.com/search/${encodeURIComponent(search)}`
+    : `https://www.spotify.com`;
+};
+
+export const getPixabaySearch = (search: string) => {
+  return search
+    ? `https://pixabay.com/music/search/${encodeURIComponent(search)}`
+    : `https://www.pixabay.com/music`;
+};
+
+export const getYoutubeMusicSearch = (search: string) => {
+  return search
+    ? `https://music.youtube.com/search?q=${encodeURIComponent(search)}`
+    : `https://music.youtube.com`;
+};

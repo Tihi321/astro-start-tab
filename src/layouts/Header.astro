@@ -19,7 +19,7 @@ import Menu from "./Menu.astro";
     });
 
     document.addEventListener("keydown", function (event) {
-      if (event.ctrlKey && (event.key === "m" || event.key === "M")) {
+      if (event.ctrlKey && event.code === "Comma") {
         const menuContainer = document.querySelector(".menu-container");
         if (menuContainer?.classList.contains("show")) {
           document.body.classList.remove("overflow");
@@ -30,8 +30,7 @@ import Menu from "./Menu.astro";
         }
       }
 
-      if (event.ctrlKey && event.code === "Comma") {
-        console.log("toggle preset");
+      if (event.ctrlKey && event.code === "Period") {
         document.dispatchEvent(new CustomEvent("preset:toggle"));
       }
     });

@@ -12,3 +12,22 @@ export const getLocalBeatsPreset = (name: string) => {
   const beatsVolume = beats ? JSON.parse(beats) : {};
   return beatsVolume[toLower(name)] || 0;
 };
+
+export const getCustomSongs = () => {
+  const songs = localStorage.getItem("customsongs");
+  return songs ? JSON.parse(songs) : [];
+};
+
+export const saveCustomSong = (name: string, src: string) => {
+  const songs = [...getCustomSongs(), { name, src }];
+  localStorage.setItem("customsongs", JSON.stringify(songs));
+
+  return songs;
+};
+
+export const removeCustomSong = (name: string) => {
+  const songs = getCustomSongs().filter((song: { name: string }) => song.name !== name);
+  localStorage.setItem("customsongs", JSON.stringify(songs));
+
+  return songs;
+};

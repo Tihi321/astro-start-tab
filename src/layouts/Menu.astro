@@ -10,26 +10,6 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     const clearBackground = document.getElementById("clear-background");
     const saveBackground = document.getElementById("save-background");
     const exportBackground = document.getElementById("export-background");
-    const savePReset = document.getElementById("save-preset");
-    const loadPReset = document.getElementById("load-preset");
-    const stopPreset = document.getElementById("stop-preset");
-    const clearPreset = document.getElementById("clear-preset");
-
-    savePReset?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("preset:save"));
-    });
-
-    loadPReset?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("preset:load"));
-    });
-
-    stopPreset?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("preset:stop"));
-    });
-
-    clearPreset?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("preset:clear"));
-    });
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
@@ -75,22 +55,22 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 <div class="menu-container">
   <div class="content">
     <button class="close-menu" id="close-menu">X</button>
-    <div class="title">Search Egnines</div>
-    <SearchEngines client:only />
-    <div class="title">Background</div>
-    <div class="options">
-      <button id="change-background">Change BG</button>
-      <button id="clear-background">Clear BG</button>
-      <button id="save-background">Save BG</button>
-      <button id="export-background">Export BG</button>
+    <div class="options-container">
+      <div class="title">Search Egnines</div>
+      <SearchEngines client:only />
     </div>
-    <div class="title">Music</div>
-    <Music client:only />
-    <div class="options">
-      <button id="save-preset">Save</button>
-      <button id="clear-preset">Clear</button>
-      <button id="load-preset">Load</button>
-      <button id="stop-preset">Stop</button>
+    <div class="options-container">
+      <div class="title">Background</div>
+      <div class="options">
+        <button id="change-background">Change BG</button>
+        <button id="clear-background">Clear BG</button>
+        <button id="save-background">Save BG</button>
+        <button id="export-background">Export BG</button>
+      </div>
+    </div>
+    <div class="options-container">
+      <div class="title">Music</div>
+      <Music client:only />
     </div>
   </div>
 </div>
@@ -108,6 +88,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     bottom: 0;
     background-color: var(--backdrop);
     z-index: 1;
+    overflow: auto;
 
     &.show {
       display: flex;
@@ -117,6 +98,9 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
   .content {
     max-width: 800px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .title {
@@ -142,15 +126,24 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     font-weight: bold;
   }
 
+  .options-container {
+    border: 1px solid var(--dark);
+    border-radius: 8px;
+    padding: 8px;
+    max-height: 800px;
+    overflow: auto;
+  }
+
   .options {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     gap: 8px;
     margin: 16px 0;
 
     button {
+      min-width: 100px;
       display: block;
       background: var(--primary);
       color: var(--light);

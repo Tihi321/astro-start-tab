@@ -159,7 +159,6 @@ export const Search = () => {
     if (searchType() === "music") {
       sendMusicSearch(search());
     }
-    setSearch("");
   };
   return (
     <Container>

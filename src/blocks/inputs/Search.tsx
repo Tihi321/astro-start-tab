@@ -1,5 +1,5 @@
 import { styled } from "solid-styled-components";
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 import {
   getBingSearch,
   getDuckDuckGo,
@@ -145,10 +145,6 @@ export const Search = () => {
   const [searchType, setSearchType] = createSignal<string>("text");
   const [search, setSearch] = createSignal<string>("");
 
-  onMount(() => {
-    setSearchType(localStorage.getItem("search-type") || "text");
-  });
-
   const sendSearch = () => {
     if (searchType() === "text") {
       sendTextSearch(search());
@@ -184,7 +180,6 @@ export const Search = () => {
         <SearchTypeButton
           class={searchType() === "text" ? "active" : ""}
           onClick={() => {
-            localStorage.setItem("search-type", "text");
             setSearchType("text");
           }}
         >
@@ -193,7 +188,6 @@ export const Search = () => {
         <SearchTypeButton
           class={searchType() === "video" ? "active" : ""}
           onClick={() => {
-            localStorage.setItem("search-type", "video");
             setSearchType("video");
           }}
         >
@@ -202,7 +196,6 @@ export const Search = () => {
         <SearchTypeButton
           class={searchType() === "music" ? "active" : ""}
           onClick={() => {
-            localStorage.setItem("search-type", "music");
             setSearchType("music");
           }}
         >

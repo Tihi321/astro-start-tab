@@ -20,7 +20,7 @@ const BeatsContainer = styled("div")`
 `;
 
 const Title = styled("h2")`
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
 `;
 

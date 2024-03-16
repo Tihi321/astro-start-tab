@@ -54,7 +54,7 @@ const FeedOptions = styled("div")`
 
 const SearchInput = styled("input")`
   outline: none;
-  text-align: center;
+  padding: 4px;
   border: 1px solid var(--light);
   border-radius: 4px;
   background: var(--dark);
@@ -121,7 +121,7 @@ const Content = styled("div")`
 
 const SearchPresetInput = styled("input")`
   outline: none;
-  text-align: center;
+  padding: 4px;
   border: 1px solid var(--light);
   border-radius: 4px;
   background: var(--dark);

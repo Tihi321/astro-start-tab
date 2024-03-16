@@ -60,6 +60,10 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
       <SearchEngines client:only />
     </div>
     <div class="options-container">
+      <div class="title">Music</div>
+      <Music client:only />
+    </div>
+    <div class="options-container">
       <div class="title">Background</div>
       <div class="options">
         <button id="change-background">Change BG</button>
@@ -67,10 +71,6 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
         <button id="save-background">Save BG</button>
         <button id="export-background">Export BG</button>
       </div>
-    </div>
-    <div class="options-container">
-      <div class="title">Music</div>
-      <Music client:only />
     </div>
   </div>
 </div>

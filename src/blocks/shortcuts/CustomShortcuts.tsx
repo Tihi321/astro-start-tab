@@ -148,7 +148,7 @@ const Inputs = styled("div")`
 
 const Input = styled("input")`
   outline: none;
-  text-align: center;
+  padding: 4px;
   border: 1px solid var(--light);
   border-radius: 4px;
   background: var(--backdrop);

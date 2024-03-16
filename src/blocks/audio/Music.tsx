@@ -8,7 +8,7 @@ import { getCustomSongs, removeCustomSong, saveCustomSong } from "./utils";
 const Container = styled("div")`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 `;
 
 const BeatsContainer = styled("div")`
@@ -21,6 +21,7 @@ const BeatsContainer = styled("div")`
 
 const Title = styled("h2")`
   font-size: 18px;
+  margin: 0;
 `;
 
 const ButtonsContainer = styled("div")`
@@ -45,7 +46,7 @@ const Button = styled("button")`
 
 const CustomSongsInput = styled("input")`
   outline: none;
-  text-align: center;
+  padding: 4px;
   border: 1px solid var(--light);
   border-radius: 4px;
   background: var(--dark);

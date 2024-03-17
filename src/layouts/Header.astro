@@ -1,14 +1,17 @@
 ---
 import Menu from "./Menu.astro";
+import { DateTime } from "../blocks/info/DateTime.tsx";
 ---
 
 <script>
-  import { get } from "lodash-es";
-  import { getRandomQuote, getRandomWord } from "../utils/random";
+  import { get, capitalize } from "lodash-es";
+  import { getRandomQuote, getRandomWord, getEnglishQuote } from "../utils/random";
+
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
     const playMusic = document.getElementById("play-music");
     const stopMusic = document.getElementById("stop-music");
+    const getNewQuote = document.getElementById("get-new-quote");
 
     playMusic?.addEventListener("click", () => {
       document.dispatchEvent(new CustomEvent("preset:load"));
@@ -41,18 +44,42 @@ import Menu from "./Menu.astro";
       menuContainer?.classList.add("show");
     });
 
+    getNewQuote?.addEventListener("click", () => {
+      getEnglishQuote().then((quote) => {
+        let quoteElement = document.getElementById("quote");
+        let authorElement = document.getElementById("author");
+
+        if (quoteElement) {
+          quoteElement.textContent = get(quote, ["text"], "");
+        }
+
+        if (authorElement) {
+          authorElement.textContent = get(quote, ["author"], "");
+        }
+      });
+    });
+
     getRandomQuote().then((quote) => {
-      document.getElementById("quote")?.insertAdjacentText("beforeend", get(quote, ["text"], ""));
-      document
-        .getElementById("author")
-        ?.insertAdjacentText("beforeend", get(quote, ["author"], ""));
+      let quoteElement = document.getElementById("quote");
+      let authorElement = document.getElementById("author");
+
+      if (quoteElement) {
+        quoteElement.textContent = get(quote, ["text"], "");
+      }
+
+      if (authorElement) {
+        authorElement.textContent = get(quote, ["author"], "");
+      }
     });
 
     getRandomWord().then((word) => {
-      document.getElementById("word")?.insertAdjacentText("beforeend", get(word, ["name"], ""));
-      document
-        .getElementById("meaning")
-        ?.insertAdjacentText("beforeend", get(word, ["meaning"], ""));
+      const title = `${capitalize(get(word, ["name"], ""))} - ${get(word, ["meaning"], "")}`;
+      document.getElementById("wow")?.setAttribute("title", title);
+
+      let wordElement = document.getElementById("wow-word");
+      if (wordElement) {
+        wordElement.textContent = get(word, ["name"], "");
+      }
     });
   });
 </script>
@@ -76,13 +103,32 @@ import Menu from "./Menu.astro";
           fill="#fff"></path></svg
       ></button
     >
-    <button class="stop-music" id="stop-music"></button>
-    <button class="play-music" id="play-music"></button>
-  </div>
+    <div class="controls">
+      <button class="stop-music" id="stop-music"></button>
+      <button class="play-music" id="play-music"></button>
+    </div>
 
+    <div class="wow" id="wow">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12" y2="8"></line>
+      </svg>
+      <div id="wow-word"></div>
+    </div>
+  </div>
   <div class="quote-of-the-day">
     <div class="quote" id="quote"></div>
     <div class="author" id="author"></div>
+    <button class="get-new-quote" id="get-new-quote" title="Get new quote"> </button>
   </div>
   <div class="info">
     <div class="weather">
@@ -99,20 +145,19 @@ import Menu from "./Menu.astro";
         >
       </div>
     </div>
-    <div class="word-of-the-day">
-      <div class="word" id="word"></div> -
-      <div class="meaning" id="meaning"></div>
+    <div class="date">
+      <DateTime client:only />
     </div>
   </div>
 </header>
 
 <style>
   header {
+    position: relative;
     width: 100%;
     height: 120px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
     padding: 8px;
   }
@@ -121,99 +166,155 @@ import Menu from "./Menu.astro";
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
 
-    .play-music {
+    .open-menu {
+      background: none;
+      border: none;
       cursor: pointer;
-      width: 20px;
-      height: 20px;
-      background-image: linear-gradient(to right, var(--light), var(--light));
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      transform: rotate(90deg);
+      margin: 0;
+      padding: 0;
+      width: 30px;
+
+      svg {
+        width: 100%;
+        height: auto;
+      }
     }
 
-    .stop-music {
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      .play-music {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        background-image: linear-gradient(to right, var(--light), var(--light));
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        transform: rotate(90deg);
+      }
+
+      .stop-music {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        background-color: var(--light);
+      }
+    }
+
+    .wow {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      text-transform: capitalize;
       cursor: pointer;
-      width: 30px;
-      height: 30px;
-      background-color: var(--light);
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
-
-    svg {
-      width: 30px;
-      height: auto;
-    }
-  }
-
-  .open-menu {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .quote-of-the-day {
-    flex: 1;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 4px;
+    width: 300px;
+    height: 120px;
+    font-size: 14px;
+    background: var(--dark);
+    padding: 8px;
+    border-radius: 8px;
     align-items: center;
+    justify-content: center;
 
     .quote {
       &::before {
         content: "“";
-        margin-right: 4px;
       }
       &::after {
         content: "”";
-        margin-left: 4px;
       }
     }
 
     .author {
       font-weight: bold;
     }
+
+    .get-new-quote {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 15px;
+      height: 15px;
+      background: none;
+      border: 2px solid var(--light);
+      cursor: pointer;
+      border-radius: 50%;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background-color: var(--light);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s ease,
+          height 0.2s ease;
+      }
+
+      &:hover::before {
+        width: 80%;
+        height: 80%;
+      }
+    }
   }
 
   .info {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
-  }
+    width: 270px;
+    height: 90px;
 
-  .word-of-the-day {
-    display: flex;
-    font-size: 14px;
-    gap: 2px;
+    .weather {
+      position: absolute;
+      width: 470px;
+      height: 140px;
+      transform: scale(0.5) translate(20px, -50px);
+      overflow: hidden;
 
-    .word {
-      font-weight: bold;
-      text-transform: uppercase;
+      iframe {
+        width: 100%;
+        height: 220px;
+        border: none;
+      }
+
+      a {
+        display: none;
+      }
     }
 
-    .meaning {
-      text-transform: capitalize;
-    }
-  }
-
-  .weather {
-    position: relative;
-    width: 470px;
-    height: 140px;
-    transform: scale(0.6);
-    overflow: hidden;
-
-    iframe {
-      width: 100%;
-      height: 220px;
-      border: none;
-    }
-
-    a {
-      display: none;
+    .date {
+      position: absolute;
+      width: 160px;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-40%);
     }
   }
 </style>

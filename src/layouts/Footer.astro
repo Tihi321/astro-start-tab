@@ -1,9 +1,12 @@
 <footer>
-  <div class="websites">
-    <div>Blog: <a href="https://tihomir-selak.from.hr/">tihomir-selak.from.hr</a></div>
-    <div>Web: <a href="https://kobilica.hr">kobilica.hr</a></div>
-    <div>News: <a href="https://star.kobilica.hr">star.kobilica.hr</a></div>
+  <div class="info">
+    <div class="websites">
+      <div>Blog: <a href="https://tihomir-selak.from.hr/">tihomir-selak.from.hr</a></div>
+      <div>Web: <a href="https://kobilica.hr">kobilica.hr</a></div>
+      <div>News: <a href="https://star.kobilica.hr">star.kobilica.hr</a></div>
+    </div>
   </div>
+
   <div class="socials">
     <a href="mailto:tihomir.selak@outlook.com" target="_blank">
       <svg
@@ -75,29 +78,35 @@
 </footer>
 
 <style>
-  .websites {
+  footer {
+    position: relative;
     display: flex;
     flex-direction: row;
-    gap: 2px;
-    font-size: 12px;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px;
+  }
+
+  .info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    .websites {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+    }
   }
 
   .socials {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 
     svg {
       width: 18px;
       height: 18px;
     }
-  }
-
-  footer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 8px;
   }
 </style>

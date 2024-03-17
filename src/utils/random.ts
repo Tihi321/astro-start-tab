@@ -1,4 +1,4 @@
-import { get } from "lodash-es";
+import { get, isEmpty, random } from "lodash-es";
 import { extractLocalData, getSaveLocalData } from "./local";
 
 export const getRandomQuote = async () => {
@@ -7,7 +7,7 @@ export const getRandomQuote = async () => {
   if (localData) {
     return localData;
   } else {
-    const response = await fetch("https://cdn.tihomir-selak.from.hr/api/random/quote-eng.json");
+    const response = await fetch("https://cdn.tihomir-selak.from.hr/daily/quote-eng.json");
     const data = await response.json();
     const text = get(data, ["data", "text"], "");
     const author = get(data, ["data", "author"], "");
@@ -15,6 +15,21 @@ export const getRandomQuote = async () => {
     localStorage.setItem("randomquote", JSON.stringify(getSaveLocalData({ text, author })));
 
     return { text, author };
+  }
+};
+
+export const getEnglishQuote = async () => {
+  const localState = JSON.parse(localStorage.getItem("englishquotes") || "[]");
+  if (!isEmpty(localState)) {
+    return localState[random(0, localState.length - 1)];
+  } else {
+    const response = await fetch("https://cdn.tihomir-selak.from.hr/assets/api/quotes-eng.json");
+    const data = await response.json();
+    const quotes = get(data, ["data"], []);
+
+    localStorage.setItem("englishquotes", JSON.stringify(quotes));
+
+    return quotes[random(0, quotes.length - 1)];
   }
 };
 

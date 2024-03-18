@@ -40,7 +40,7 @@ export const getRandomWord = async () => {
     return localData;
   } else {
     const response = await fetch(
-      "https://cdn.tihomir-selak.from.hr/api/random/vocabulary-word-eng.json"
+      "https://cdn.tihomir-selak.from.hr/daily/vocabulary-word-eng.json"
     );
     const data = await response.json();
     const name = get(data, ["data", "name"], "");

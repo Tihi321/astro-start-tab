@@ -20,12 +20,14 @@ const Option = styled("option")`
 `;
 
 export const SearchEngines = () => {
+  const [selectedAISearchEngine, setSelectedAISearchEngine] = createSignal<string>("");
   const [selectedTextSearchEngine, setSelectedTextSearchEngine] = createSignal<string>("");
   const [selectedVideoSearchEngine, setSelectedVideoSearchEngine] = createSignal<string>("");
   const [selectedMusicSearchEngine, setSelectedMusicSearchEngine] = createSignal<string>("");
 
   onMount(() => {
-    setSelectedTextSearchEngine(localStorage.getItem("text-search-engine") || "phind");
+    setSelectedAISearchEngine(localStorage.getItem("ai-search-engine") || "phind");
+    setSelectedTextSearchEngine(localStorage.getItem("text-search-engine") || "google");
     setSelectedVideoSearchEngine(localStorage.getItem("video-search-engine") || "youtube");
     setSelectedMusicSearchEngine(localStorage.getItem("music-search-engine") || "soundcloud");
   });
@@ -34,12 +36,21 @@ export const SearchEngines = () => {
     <Container>
       <Select
         onChange={(event) => {
+          setSelectedAISearchEngine(event.currentTarget.value);
+          localStorage.setItem("ai-search-engine", event.currentTarget.value);
+        }}
+        value={selectedAISearchEngine()}
+      >
+        <Option value="phind">Phind</Option>
+        <Option value="copilot">Copilot</Option>
+      </Select>
+      <Select
+        onChange={(event) => {
           setSelectedTextSearchEngine(event.currentTarget.value);
           localStorage.setItem("text-search-engine", event.currentTarget.value);
         }}
         value={selectedTextSearchEngine()}
       >
-        <Option value="phind">Phind</Option>
         <Option value="google">Google</Option>
         <Option value="bing">Bing</Option>
         <Option value="duckduckgo">DuckDuckGo</Option>

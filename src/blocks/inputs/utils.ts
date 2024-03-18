@@ -18,12 +18,6 @@ export const removeSearchPreset = (name: string) => {
   return searchPresets;
 };
 
-export const getPhindSearchUrl = (search: string) => {
-  return search
-    ? `https://www.phind.com/search?q=${encodeURIComponent(search)}&ignoreSearchResults=false`
-    : `https://www.phind.com`;
-};
-
 export const getGoogleSearch = (search: string) => {
   return search
     ? `https://www.google.com/search?q=${encodeURIComponent(search)}&oq=${encodeURIComponent(
@@ -42,6 +36,18 @@ export const getDuckDuckGo = (search: string) => {
   return search
     ? `https://duckduckgo.com/?va=e&t=ho&q=${encodeURIComponent(search)}`
     : `https://www.duckduckgo.com`;
+};
+
+export const getPhindSearchUrl = (search: string) => {
+  return search
+    ? `https://www.phind.com/search?q=${encodeURIComponent(search)}&ignoreSearchResults=false`
+    : `https://www.phind.com`;
+};
+
+export const getCopilotSearchUrl = (search: string) => {
+  return search
+    ? `https://www.bing.com/search?showconv=1&sendquery=1&q=${encodeURIComponent(search)}`
+    : `https://copilot.microsoft.com/`;
 };
 
 export const getYoutubeSearch = (search: string) => {

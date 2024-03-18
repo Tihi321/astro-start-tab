@@ -2,6 +2,7 @@ import { styled } from "solid-styled-components";
 import { createSignal } from "solid-js";
 import {
   getBingSearch,
+  getCopilotSearchUrl,
   getDuckDuckGo,
   getGameDevSearch,
   getGoogleSearch,
@@ -78,8 +79,22 @@ const Submit = styled("button")`
   }
 `;
 
+const sendAiSearch = (search: string) => {
+  const searchEngine = localStorage.getItem("ai-search-engine") || "phind";
+
+  switch (searchEngine) {
+    case "phind":
+      window.location.href = getPhindSearchUrl(search);
+      break;
+    case "copilot":
+      window.location.href = getCopilotSearchUrl(search);
+      break;
+    default:
+  }
+};
+
 const sendTextSearch = (search: string) => {
-  const searchEngine = localStorage.getItem("text-search-engine") || "phind";
+  const searchEngine = localStorage.getItem("text-search-engine") || "google";
 
   switch (searchEngine) {
     case "phind":
@@ -142,10 +157,13 @@ const sendMusicSearch = (search: string) => {
 };
 
 export const Search = () => {
-  const [searchType, setSearchType] = createSignal<string>("text");
+  const [searchType, setSearchType] = createSignal<string>("ai");
   const [search, setSearch] = createSignal<string>("");
 
   const sendSearch = () => {
+    if (searchType() === "ai") {
+      sendAiSearch(search());
+    }
     if (searchType() === "text") {
       sendTextSearch(search());
     }
@@ -177,6 +195,14 @@ export const Search = () => {
         </Submit>
       </SearchContainer>
       <SearchTypeButtons>
+        <SearchTypeButton
+          class={searchType() === "ai" ? "active" : ""}
+          onClick={() => {
+            setSearchType("ai");
+          }}
+        >
+          Ai
+        </SearchTypeButton>
         <SearchTypeButton
           class={searchType() === "text" ? "active" : ""}
           onClick={() => {

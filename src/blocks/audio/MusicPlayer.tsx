@@ -50,8 +50,32 @@ const PrevButton = styled(PlayButton)`
   transform: rotate(-90deg);
 `;
 
+const Slider = styled("input")`
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--dark);
+  background-clip: content-box;
+  padding: 4px 0;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--light);
+    margin-top: -4px;
+  }
+`;
+
 export const MusicPlayer = () => {
   let audioElement: any;
+  const [audioVolume, setAudioVolume] = createSignal<number>(5);
   const [audioLevel, setAudioLevel] = createSignal<number>(0);
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
@@ -66,11 +90,28 @@ export const MusicPlayer = () => {
     setSongName(usedSong.name);
     setSongSRC(usedSong.src);
     audioElement.src = usedSong.src;
-    audioElement.volume = 5 / audioLevel();
+    audioElement.volume = audioVolume() / audioLevel();
     audioElement.play();
   };
 
+  const onChange = (event: any) => {
+    if (audioElement) {
+      const volume = Number(event.currentTarget.value);
+      setAudioVolume(volume);
+      localStorage.setItem("playlist-audio-volume", event.currentTarget.value);
+      if (volume === 0) {
+        audioElement.volume = 0;
+        audioElement.pause();
+      } else {
+        audioElement.volume = audioVolume() / getAudioLevel();
+        audioElement.play();
+      }
+    }
+  };
+
   onMount(() => {
+    const audioVolume = localStorage.getItem("playlist-audio-volume") || "5";
+    setAudioVolume(Number(audioVolume));
     setAudioLevel(getAudioLevel());
 
     document.addEventListener("music:update", () => {
@@ -131,6 +172,7 @@ export const MusicPlayer = () => {
             playPlaylist();
           }}
         ></PlayButton>
+        <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
       </GroupContainer>
     </Container>
   );

@@ -57,8 +57,22 @@ const Slider = styled("input")`
   height: 15px;
   border-radius: 5px;
   outline: none;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--dark);
+  background-clip: content-box;
+  padding: 4px 0;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--light);
+    margin-top: -4px;
+  }
 `;
 
 const RemoveButton = styled("button")`
@@ -67,7 +81,6 @@ const RemoveButton = styled("button")`
   opacity: 0;
   top: 0;
   right: 0;
-  transition: opacity 0.2s;
 `;
 
 export const Beats = ({
@@ -159,7 +172,7 @@ export const Beats = ({
         audioElement.volume = 0;
         audioElement.pause();
       } else {
-        audioElement.volume = audioVolume() / 100;
+        audioElement.volume = audioVolume() / getAudioLevel();
         audioElement.play();
       }
     }

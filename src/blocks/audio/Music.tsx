@@ -152,6 +152,7 @@ export const Music = () => {
         <Button
           onClick={() => {
             document.dispatchEvent(new CustomEvent("preset:stop"));
+            document.dispatchEvent(new CustomEvent("playlist:stop"));
           }}
         >
           Stop

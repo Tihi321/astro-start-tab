@@ -3,7 +3,13 @@ import { Beats } from "./Beats";
 import { map } from "lodash-es";
 import { DEFAULT_GERNES, DEFAULT_SFX } from "./constants";
 import { createSignal, onMount } from "solid-js";
-import { getCustomSongs, removeCustomSong, saveCustomSong } from "./utils";
+import {
+  getAudioLevel,
+  getCustomSongs,
+  removeCustomSong,
+  saveCustomSong,
+  setAudioLevel,
+} from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -61,9 +67,11 @@ export const Music = () => {
   const [customSongName, setCustomSongName] = createSignal("");
   const [customSongUrl, setCustomSongUrl] = createSignal("");
   const [customSongs, setCustomSongs] = createSignal([]);
+  const [localAudioLevel, setLocalAudioLevel] = createSignal();
 
   onMount(() => {
     setCustomSongs(getCustomSongs());
+    setLocalAudioLevel(getAudioLevel());
   });
 
   return (
@@ -118,7 +126,7 @@ export const Music = () => {
           Add
         </Button>
       </ButtonsContainer>
-      <Title>Presets</Title>
+      <Title>Options</Title>
       <ButtonsContainer>
         <Button
           onClick={() => {
@@ -147,6 +155,16 @@ export const Music = () => {
           }}
         >
           Stop
+        </Button>
+        <Button
+          onClick={() => {
+            const level = localAudioLevel() === 100 ? 10 : 100;
+            setLocalAudioLevel(level);
+            setAudioLevel(level);
+            document.dispatchEvent(new CustomEvent("preset:update"));
+          }}
+        >
+          {localAudioLevel() === 100 ? "Low" : "High"}
         </Button>
       </ButtonsContainer>
     </Container>

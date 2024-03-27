@@ -31,3 +31,13 @@ export const removeCustomSong = (name: string) => {
 
   return songs;
 };
+
+export const getAudioLevel = () => {
+  const audioLevel = localStorage.getItem("audio-level");
+
+  return Number(audioLevel) || 100;
+};
+
+export const setAudioLevel = (level: number) => {
+  localStorage.setItem("audio-level", JSON.stringify(level));
+};

@@ -2,6 +2,7 @@ import { styled } from "solid-styled-components";
 import { createSignal } from "solid-js";
 import {
   getBingSearch,
+  getChosicSearch,
   getCopilotSearchUrl,
   getDuckDuckGo,
   getGameDevSearch,
@@ -148,6 +149,9 @@ const sendMusicSearch = (search: string) => {
       break;
     case "pixabay":
       window.location.href = getPixabaySearch(search);
+      break;
+    case "chosic":
+      window.location.href = getChosicSearch(search);
       break;
     case "youtubemusic":
       window.location.href = getYoutubeMusicSearch(search);

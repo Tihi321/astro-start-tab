@@ -79,6 +79,7 @@ export const SearchEngines = () => {
         <Option value="spotify">Spotify</Option>
         <Option value="youtubemusic">Youtube Music</Option>
         <Option value="pixabay">Pixabay</Option>
+        <Option value="chosic">Chosic</Option>
       </Select>
     </Container>
   );

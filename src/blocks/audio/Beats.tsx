@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
-import { getLocalBeatsPreset, setLocalBeatsPreset } from "./utils";
+import { getAudioLevel, getLocalBeatsPreset, setLocalBeatsPreset } from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -95,7 +95,7 @@ export const Beats = ({
       if (audioElement) {
         if (audioElement.paused) {
           setAudioVolume(volume);
-          audioElement.volume = audioVolume() / 100;
+          audioElement.volume = audioVolume() / getAudioLevel();
           audioElement.play();
         } else {
           if (volume === 0) {
@@ -104,10 +104,15 @@ export const Beats = ({
             audioElement.pause();
           } else {
             setAudioVolume(volume);
-            audioElement.volume = audioVolume() / 100;
+            audioElement.volume = audioVolume() / getAudioLevel();
             audioElement.play();
           }
         }
+      }
+    });
+    document.addEventListener("preset:update", () => {
+      if (!audioElement.paused) {
+        audioElement.volume = audioVolume() / getAudioLevel();
       }
     });
     document.addEventListener("preset:stop", () => {
@@ -127,7 +132,7 @@ export const Beats = ({
         if (audioElement.paused) {
           const volume = getLocalBeatsPreset(name);
           setAudioVolume(volume);
-          audioElement.volume = audioVolume() / 100;
+          audioElement.volume = audioVolume() / getAudioLevel();
           audioElement.play();
         } else {
           setAudioVolume(0);

@@ -98,6 +98,12 @@ export const getPixabaySearch = (search: string) => {
     : `https://www.pixabay.com/music`;
 };
 
+export const getChosicSearch = (search: string) => {
+  return search
+    ? `https://www.chosic.com/free-music/all/?keyword=${encodeURIComponent(search)}`
+    : `https://www.chosic.com/free-music/all/`;
+};
+
 export const getYoutubeMusicSearch = (search: string) => {
   return search
     ? `https://music.youtube.com/search?q=${encodeURIComponent(search)}`

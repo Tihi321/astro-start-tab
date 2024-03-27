@@ -161,7 +161,7 @@ export const Music = () => {
             const level = localAudioLevel() === 100 ? 10 : 100;
             setLocalAudioLevel(level);
             setAudioLevel(level);
-            document.dispatchEvent(new CustomEvent("preset:update"));
+            document.dispatchEvent(new CustomEvent("music:update"));
           }}
         >
           {localAudioLevel() === 100 ? "Low" : "High"}

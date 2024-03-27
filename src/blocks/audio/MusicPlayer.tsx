@@ -56,24 +56,43 @@ export const MusicPlayer = () => {
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
 
+  const playPlaylist = (next = true) => {
+    document.dispatchEvent(new CustomEvent("preset:stop"));
+    const songs = getCustomSongs();
+    const currentSongIndex = songs.findIndex((song: { src: string }) => song.src === songSRC());
+    const nextSong = songs[currentSongIndex + 1] || songs[0];
+    const prevSong = songs[currentSongIndex - 1] || songs[songs.length - 1];
+    const usedSong = next ? nextSong : prevSong;
+    setSongName(usedSong.name);
+    setSongSRC(usedSong.src);
+    audioElement.src = usedSong.src;
+    audioElement.volume = 5 / audioLevel();
+    audioElement.play();
+  };
+
   onMount(() => {
     setAudioLevel(getAudioLevel());
 
-    document.addEventListener("preset:update", () => {
+    document.addEventListener("music:update", () => {
       if (!audioElement.paused) {
         audioElement.volume = 5 / getAudioLevel();
       }
     });
 
+    document.addEventListener("playlist:stop", () => {
+      audioElement.pause();
+    });
+
+    document.addEventListener("playlist:prev", () => {
+      playPlaylist(false);
+    });
+
+    document.addEventListener("playlist:next", () => {
+      playPlaylist();
+    });
+
     audioElement.addEventListener("ended", () => {
-      const songs = getCustomSongs();
-      const currentSongIndex = songs.findIndex((song: { src: string }) => song.src === songSRC());
-      const nextSong = songs[currentSongIndex + 1] || songs[0];
-      setSongName(nextSong.name);
-      setSongSRC(nextSong.src);
-      audioElement.src = nextSong.src;
-      audioElement.volume = 5 / getAudioLevel();
-      audioElement.play();
+      playPlaylist();
     });
   });
 
@@ -99,17 +118,7 @@ export const MusicPlayer = () => {
         <Title>{songName() || "Playlist"}</Title>
         <PrevButton
           onClick={() => {
-            document.dispatchEvent(new CustomEvent("preset:stop"));
-            const songs = getCustomSongs();
-            const currentSongIndex = songs.findIndex(
-              (song: { src: string }) => song.src === songSRC()
-            );
-            const prevSong = songs[currentSongIndex - 1] || songs[songs.length - 1];
-            setSongName(prevSong.name);
-            setSongSRC(prevSong.src);
-            audioElement.src = prevSong.src;
-            audioElement.volume = 5 / audioLevel();
-            audioElement.play();
+            playPlaylist(false);
           }}
         ></PrevButton>
         <StopButton
@@ -119,17 +128,7 @@ export const MusicPlayer = () => {
         ></StopButton>
         <PlayButton
           onClick={() => {
-            document.dispatchEvent(new CustomEvent("preset:stop"));
-            const songs = getCustomSongs();
-            const currentSongIndex = songs.findIndex(
-              (song: { src: string }) => song.src === songSRC()
-            );
-            const nextSong = songs[currentSongIndex + 1] || songs[0];
-            setSongName(nextSong.name);
-            setSongSRC(nextSong.src);
-            audioElement.src = nextSong.src;
-            audioElement.volume = 5 / audioLevel();
-            audioElement.play();
+            playPlaylist();
           }}
         ></PlayButton>
       </GroupContainer>

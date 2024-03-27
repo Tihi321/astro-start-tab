@@ -110,7 +110,7 @@ export const Beats = ({
         }
       }
     });
-    document.addEventListener("preset:update", () => {
+    document.addEventListener("music:update", () => {
       if (!audioElement.paused) {
         audioElement.volume = audioVolume() / getAudioLevel();
       }

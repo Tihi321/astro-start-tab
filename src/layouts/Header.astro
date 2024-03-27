@@ -16,17 +16,43 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
     document.addEventListener("keydown", function (event) {
       if (event.ctrlKey && event.code === "Comma") {
         const menuContainer = document.querySelector(".menu-container");
-        if (menuContainer?.classList.contains("hide")) {
+        if (menuContainer?.classList.contains("show")) {
           document.body.classList.remove("overflow");
-          menuContainer?.classList.remove("hide");
+          menuContainer?.classList.remove("show");
         } else {
           document.body.classList.add("overflow");
-          menuContainer?.classList.add("hide");
+          menuContainer?.classList.add("show");
         }
       }
 
       if (event.ctrlKey && event.code === "Period") {
+        const controlsContainer = document.querySelector(".controls");
+        if (controlsContainer?.classList.contains("hide")) {
+          controlsContainer?.classList.remove("hide");
+        } else {
+          document.body.classList.add("overflow");
+          controlsContainer?.classList.add("hide");
+        }
+      }
+
+      if (event.ctrlKey && event.altKey && event.code === "Numpad5") {
         document.dispatchEvent(new CustomEvent("preset:toggle"));
+      }
+
+      if (event.ctrlKey && event.altKey && event.code === "Numpad4") {
+        document.dispatchEvent(new CustomEvent("preset:stop"));
+      }
+
+      if (event.ctrlKey && event.altKey && event.code === "Numpad1") {
+        document.dispatchEvent(new CustomEvent("playlist:prev"));
+      }
+
+      if (event.ctrlKey && event.altKey && event.code === "Numpad2") {
+        document.dispatchEvent(new CustomEvent("playlist:stop"));
+      }
+
+      if (event.ctrlKey && event.altKey && event.code === "Numpad3") {
+        document.dispatchEvent(new CustomEvent("playlist:next"));
       }
     });
 
@@ -41,7 +67,6 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
     });
 
     openMenu?.addEventListener("click", () => {
-      console.log("open menu");
       const menuContainer = document.querySelector(".menu-container");
       document.body.classList.add("overflow");
       menuContainer?.classList.add("show");
@@ -194,7 +219,7 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
 
         &.hide {
           .controls-container {
-            transform: translateX(calc(-100% + 4px));
+            transform: translateX(-100%);
           }
         }
         .controls-container {

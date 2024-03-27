@@ -4,9 +4,10 @@ import { getAudioLevel, getCustomSongs } from "./utils";
 
 const Container = styled("div")`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
+  width: 60px;
 `;
 
 const GroupContainer = styled("div")`
@@ -20,6 +21,7 @@ const GroupContainer = styled("div")`
 
 const Title = styled("h2")`
   font-size: 12px;
+  line-height: 1;
   width: 100%;
   color: var(--text);
   text-align: center;
@@ -53,16 +55,25 @@ export const MusicPlayer = () => {
   const [audioLevel, setAudioLevel] = createSignal<number>(0);
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
-  const [customSongs, setCustomSongs] = createSignal([]);
 
   onMount(() => {
-    setCustomSongs(getCustomSongs());
     setAudioLevel(getAudioLevel());
 
     document.addEventListener("preset:update", () => {
       if (!audioElement.paused) {
         audioElement.volume = 5 / getAudioLevel();
       }
+    });
+
+    audioElement.addEventListener("ended", () => {
+      const songs = getCustomSongs();
+      const currentSongIndex = songs.findIndex((song: { src: string }) => song.src === songSRC());
+      const nextSong = songs[currentSongIndex + 1] || songs[0];
+      setSongName(nextSong.name);
+      setSongSRC(nextSong.src);
+      audioElement.src = nextSong.src;
+      audioElement.volume = 5 / getAudioLevel();
+      audioElement.play();
     });
   });
 
@@ -85,7 +96,7 @@ export const MusicPlayer = () => {
         ></PlayButton>
       </GroupContainer>
       <GroupContainer>
-        <Title>Playlist</Title>
+        <Title>{songName() || "Playlist"}</Title>
         <PrevButton
           onClick={() => {
             document.dispatchEvent(new CustomEvent("preset:stop"));

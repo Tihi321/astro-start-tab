@@ -122,7 +122,7 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
           fill="#fff"></path></svg
       ></button
     >
-    <div class="controls">
+    <div class="controls hide">
       <div class="controls-container">
         <MusicPlayer client:only />
         <button class="toggle-controls" id="toggle-controls"></button>
@@ -191,9 +191,6 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
         align-items: center;
         gap: 4px;
         position: relative;
-        height: 28px;
-        width: 105px;
-        overflow: hidden;
 
         &.hide {
           .controls-container {
@@ -203,7 +200,8 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
         .controls-container {
           position: absolute;
           left: 0;
-          width: 100%;
+          top: 0;
+          width: 60px;
           display: flex;
           padding-right: 8px;
           gap: 4px;
@@ -213,6 +211,7 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
         .toggle-controls {
           position: absolute;
           right: 0;
+          opacity: 0.3;
           background: none;
           border: none;
           cursor: pointer;

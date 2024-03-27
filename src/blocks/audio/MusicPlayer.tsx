@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
-import { getAudioLevel, getCustomSongs } from "./utils";
+import { formatTime, getAudioLevel, getCustomSongs } from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -17,6 +17,18 @@ const GroupContainer = styled("div")`
   align-items: center;
   justify-content: center;
   gap: 2px;
+  border: 1px solid var(--dark);
+  border-radius: 4px;
+  padding: 2px;
+`;
+
+const TimeContainer = styled("div")`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 10px;
 `;
 
 const Title = styled("h2")`
@@ -65,17 +77,41 @@ const Slider = styled("input")`
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
     border-radius: 50%;
     background: var(--light);
-    margin-top: -4px;
+    margin-top: -2px;
+  }
+`;
+
+const TimlineSlider = styled("input")`
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--dark);
+  background-clip: content-box;
+  padding: 4px 0;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 8px;
+    width: 8px;
+    background: var(--light);
+    margin-top: -2px;
   }
 `;
 
 export const MusicPlayer = () => {
   let audioElement: any;
   const [audioVolume, setAudioVolume] = createSignal<number>(5);
+  const [duration, setDuration] = createSignal<number>(0);
+  const [currentTime, setCurrentTime] = createSignal<number>(0);
   const [audioLevel, setAudioLevel] = createSignal<number>(0);
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
@@ -109,14 +145,21 @@ export const MusicPlayer = () => {
     }
   };
 
+  const onTimeSliderChange = (event: any) => {
+    if (audioElement) {
+      const currentTime = Number(event.currentTarget.value);
+      audioElement.currentTime = currentTime;
+      setCurrentTime(currentTime);
+    }
+  };
+
   onMount(() => {
-    const audioVolume = localStorage.getItem("playlist-audio-volume") || "5";
-    setAudioVolume(Number(audioVolume));
+    setAudioVolume(Number(localStorage.getItem("playlist-audio-volume") || "5"));
     setAudioLevel(getAudioLevel());
 
     document.addEventListener("music:update", () => {
       if (!audioElement.paused) {
-        audioElement.volume = 5 / getAudioLevel();
+        audioElement.volume = audioVolume() / getAudioLevel();
       }
     });
 
@@ -135,11 +178,19 @@ export const MusicPlayer = () => {
     audioElement.addEventListener("ended", () => {
       playPlaylist();
     });
+
+    audioElement.addEventListener("loadedmetadata", () => {
+      setDuration(audioElement.duration);
+    });
+
+    audioElement.addEventListener("timeupdate", () => {
+      setCurrentTime(audioElement.currentTime);
+    });
   });
 
   return (
     <Container>
-      <audio ref={audioElement} loop>
+      <audio ref={audioElement}>
         <source type="audio/mpeg" />
       </audio>
       <GroupContainer>
@@ -172,6 +223,16 @@ export const MusicPlayer = () => {
             playPlaylist();
           }}
         ></PlayButton>
+        <TimeContainer>
+          {formatTime(currentTime())} / {formatTime(duration())}
+        </TimeContainer>
+        <TimlineSlider
+          type="range"
+          min="0"
+          max={duration()}
+          value={currentTime()}
+          onChange={onTimeSliderChange}
+        />
         <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
       </GroupContainer>
     </Container>

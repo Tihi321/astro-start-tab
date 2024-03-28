@@ -80,6 +80,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 <style>
   .menu-container {
     position: fixed;
+    z-index: 2;
     display: none;
     flex-direction: column;
     align-items: center;
@@ -89,7 +90,6 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     right: 0;
     bottom: 0;
     background-color: var(--backdrop);
-    z-index: 1;
     overflow: auto;
 
     &.show {

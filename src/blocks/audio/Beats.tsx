@@ -20,7 +20,6 @@ const AudioControls = styled("div")`
 `;
 
 const Name = styled("div")`
-  position: relative;
   width: 100%;
   text-align: center;
   font-size: 14px;
@@ -75,23 +74,7 @@ const Slider = styled("input")`
   }
 `;
 
-const RemoveButton = styled("button")`
-  position: absolute;
-  cursor: pointer;
-  opacity: 0;
-  top: 0;
-  right: 0;
-`;
-
-export const Beats = ({
-  src,
-  name,
-  onRemove,
-}: {
-  name: string;
-  src: string;
-  onRemove?: () => void;
-}) => {
+export const Beats = ({ src, name }: { name: string; src: string }) => {
   const [audioVolume, setAudioVolume] = createSignal<number>(0);
   let audioElement: any;
 
@@ -183,9 +166,7 @@ export const Beats = ({
       <audio ref={audioElement}>
         <source src={src} type="audio/mpeg" />
       </audio>
-      <Name>
-        {name} {onRemove && <RemoveButton onClick={onRemove}>-</RemoveButton>}
-      </Name>
+      <Name>{name}</Name>
       <AudioControls>
         <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
         <Input type="number" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />

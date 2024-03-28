@@ -1,52 +1,47 @@
 import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { formatTime, getAudioLevel, getCustomSongs } from "./utils";
+import { Playlist } from "./Playlist";
 
 const Container = styled("div")`
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  width: 60px;
+  width: 100%;
+  gap: 2px;
+  background-color: var(--backdrop);
 `;
 
 const GroupContainer = styled("div")`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: 2px;
-  border: 1px solid var(--dark);
-  border-radius: 4px;
   padding: 2px;
 `;
 
-const TimeContainer = styled("div")`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  font-size: 10px;
+const TitleGroupsContainer = styled(GroupContainer)`
+  cursor: pointer;
+`;
+
+const TimelineContainer = styled(GroupContainer)`
+  font-size: 12px;
 `;
 
 const Title = styled("h2")`
   font-size: 12px;
   line-height: 1;
-  width: 100%;
   color: var(--text);
-  text-align: center;
   margin: 0;
   padding: 0;
-  cursor: default;
 `;
 
 const StopButton = styled("button")`
   cursor: pointer;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background-color: var(--light);
+  border: none;
 `;
 
 const PlayButton = styled("button")`
@@ -56,6 +51,18 @@ const PlayButton = styled("button")`
   background-image: linear-gradient(to right, var(--light), var(--light));
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   transform: rotate(90deg);
+  border: none;
+`;
+
+const PlaylistButton = styled("button")`
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  background-image: linear-gradient(to right, var(--light), var(--light));
+  clip-path: polygon(0% 0%, 100% 0%, 100% 20%, 0% 20%), polygon(0% 40%, 100% 40%, 100% 60%, 0% 60%),
+    polygon(0% 80%, 100% 80%, 100% 100%, 0% 100%);
+  transform: rotate(90deg);
+  border: none;
 `;
 
 const PrevButton = styled(PlayButton)`
@@ -72,21 +79,21 @@ const Slider = styled("input")`
   background: var(--dark);
   background-clip: content-box;
   padding: 4px 0;
+  width: 30px;
   cursor: pointer;
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
-    height: 12px;
-    width: 12px;
+    height: 8px;
+    width: 8px;
     border-radius: 50%;
     background: var(--light);
     margin-top: -2px;
   }
 `;
 
-const TimlineSlider = styled("input")`
-  width: 100%;
+const TimelineSlider = styled("input")`
   height: 15px;
   border-radius: 5px;
   outline: none;
@@ -95,6 +102,7 @@ const TimlineSlider = styled("input")`
   background: var(--dark);
   background-clip: content-box;
   padding: 4px 0;
+  width: 60px;
   cursor: pointer;
 
   &::-webkit-slider-thumb {
@@ -107,12 +115,20 @@ const TimlineSlider = styled("input")`
   }
 `;
 
+const Divider = styled("div")`
+  width: 2px;
+  height: 12px;
+  background-color: var(--light);
+  margin: 0px 2px;
+`;
+
 export const MusicPlayer = () => {
   let audioElement: any;
   const [audioVolume, setAudioVolume] = createSignal<number>(5);
   const [duration, setDuration] = createSignal<number>(0);
   const [currentTime, setCurrentTime] = createSignal<number>(0);
   const [audioLevel, setAudioLevel] = createSignal<number>(0);
+  const [openPlaylist, setOpenPlaylist] = createSignal(false);
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
 
@@ -193,48 +209,83 @@ export const MusicPlayer = () => {
       <audio ref={audioElement}>
         <source type="audio/mpeg" />
       </audio>
+      <TitleGroupsContainer
+        onClick={() => {
+          navigator.clipboard.writeText(songSRC());
+        }}
+      >
+        <Title>Song - </Title>
+        <Title>{songName()}</Title>
+      </TitleGroupsContainer>
       <GroupContainer>
-        <Title>Presets</Title>
-        <StopButton
-          onClick={() => {
-            document.dispatchEvent(new CustomEvent("preset:stop"));
-          }}
-        ></StopButton>
-        <PlayButton
-          onClick={() => {
-            document.dispatchEvent(new CustomEvent("preset:load"));
-          }}
-        ></PlayButton>
-      </GroupContainer>
-      <GroupContainer>
-        <Title>{songName() || "Playlist"}</Title>
-        <PrevButton
-          onClick={() => {
-            playPlaylist(false);
-          }}
-        ></PrevButton>
-        <StopButton
-          onClick={() => {
-            audioElement.pause();
-          }}
-        ></StopButton>
-        <PlayButton
-          onClick={() => {
-            playPlaylist();
-          }}
-        ></PlayButton>
-        <TimeContainer>
-          {formatTime(currentTime())} / {formatTime(duration())}
-        </TimeContainer>
-        <TimlineSlider
-          type="range"
-          min="0"
-          max={duration()}
-          value={currentTime()}
-          onChange={onTimeSliderChange}
-        />
+        <GroupContainer>
+          <PrevButton
+            onClick={() => {
+              playPlaylist(false);
+            }}
+          ></PrevButton>
+          <StopButton
+            onClick={() => {
+              if (audioElement.paused) {
+                audioElement.play();
+              } else {
+                audioElement.pause();
+              }
+            }}
+          ></StopButton>
+          <PlayButton
+            onClick={() => {
+              playPlaylist();
+            }}
+          ></PlayButton>
+        </GroupContainer>
+        <Divider />
+        <TimelineContainer>
+          {formatTime(currentTime())}
+          <TimelineSlider
+            type="range"
+            min="0"
+            max={duration()}
+            value={currentTime()}
+            onChange={onTimeSliderChange}
+          />
+          {formatTime(duration())}
+        </TimelineContainer>
+        <Divider />
         <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
+        <Divider />
+        <GroupContainer>
+          <Title>B</Title>
+          <StopButton
+            onClick={() => {
+              document.dispatchEvent(new CustomEvent("preset:stop"));
+            }}
+          ></StopButton>
+          <PlayButton
+            onClick={() => {
+              document.dispatchEvent(new CustomEvent("preset:load"));
+            }}
+          ></PlayButton>
+        </GroupContainer>
+        <Divider />
+        <GroupContainer>
+          <PlaylistButton
+            onClick={() => {
+              setOpenPlaylist(!openPlaylist());
+            }}
+          ></PlaylistButton>
+        </GroupContainer>
       </GroupContainer>
+      {openPlaylist() && (
+        <Playlist
+          onChange={(src, name) => {
+            setSongName(name);
+            setSongSRC(src);
+            audioElement.src = src;
+            audioElement.play();
+          }}
+        />
+      )}
     </Container>
   );
 };

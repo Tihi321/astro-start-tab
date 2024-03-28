@@ -1,7 +1,6 @@
 ---
 import Menu from "./Menu.astro";
 import { DateTime } from "../blocks/info/DateTime.tsx";
-import { MusicPlayer } from "../blocks/audio/MusicPlayer";
 ---
 
 <script>
@@ -11,7 +10,6 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
     const getNewQuote = document.getElementById("get-new-quote");
-    const toggleControls = document.getElementById("toggle-controls");
 
     document.addEventListener("keydown", function (event) {
       if (event.ctrlKey && event.code === "Comma") {
@@ -23,45 +21,6 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
           document.body.classList.add("overflow");
           menuContainer?.classList.add("show");
         }
-      }
-
-      if (event.ctrlKey && event.code === "Period") {
-        const controlsContainer = document.querySelector(".controls");
-        if (controlsContainer?.classList.contains("hide")) {
-          controlsContainer?.classList.remove("hide");
-        } else {
-          document.body.classList.add("overflow");
-          controlsContainer?.classList.add("hide");
-        }
-      }
-
-      if (event.ctrlKey && event.altKey && event.code === "Numpad5") {
-        document.dispatchEvent(new CustomEvent("preset:toggle"));
-      }
-
-      if (event.ctrlKey && event.altKey && event.code === "Numpad4") {
-        document.dispatchEvent(new CustomEvent("preset:stop"));
-      }
-
-      if (event.ctrlKey && event.altKey && event.code === "Numpad1") {
-        document.dispatchEvent(new CustomEvent("playlist:prev"));
-      }
-
-      if (event.ctrlKey && event.altKey && event.code === "Numpad2") {
-        document.dispatchEvent(new CustomEvent("playlist:stop"));
-      }
-
-      if (event.ctrlKey && event.altKey && event.code === "Numpad3") {
-        document.dispatchEvent(new CustomEvent("playlist:next"));
-      }
-    });
-
-    toggleControls?.addEventListener("click", () => {
-      const controlsContainer = document.querySelector(".controls");
-      if (controlsContainer?.classList.contains("hide")) {
-        controlsContainer?.classList.remove("hide");
-      } else {
-        controlsContainer?.classList.add("hide");
       }
     });
 
@@ -146,12 +105,6 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
           fill="#fff"></path></svg
       ></button
     >
-    <div class="controls hide">
-      <div class="controls-container">
-        <MusicPlayer client:only />
-        <button class="toggle-controls" id="toggle-controls"></button>
-      </div>
-    </div>
   </div>
   <div class="quote-of-the-day">
     <div class="quote" id="quote"></div>
@@ -177,187 +130,150 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
       <DateTime client:only />
     </div>
   </div>
-
-  <style>
-    header {
-      position: relative;
-      width: 100%;
-      height: 120px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 8px;
-    }
-
-    .menu {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-
-      .open-menu {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        width: 30px;
-
-        svg {
-          width: 100%;
-          height: auto;
-        }
-      }
-
-      .controls {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        position: relative;
-
-        &.hide {
-          .controls-container {
-            transform: translateX(-100%);
-          }
-        }
-        .controls-container {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 70px;
-          display: flex;
-          padding-right: 8px;
-          gap: 4px;
-          transition: transform 0.2s ease-in-out;
-        }
-
-        .toggle-controls {
-          position: absolute;
-          right: 0;
-          opacity: 0.3;
-          background: none;
-          border: none;
-          cursor: pointer;
-          background-color: var(--text);
-          height: 100%;
-          width: 4px;
-          padding: 0;
-          margin: 0;
-        }
-      }
-
-      .wow {
-        display: flex;
-        gap: 4px;
-        text-transform: capitalize;
-        cursor: pointer;
-        font-size: 16px;
-        line-height: 1;
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-      }
-    }
-
-    .quote-of-the-day {
-      position: absolute;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      width: 300px;
-      height: 120px;
-      font-size: 14px;
-      background: var(--dark);
-      padding: 8px;
-      border-radius: 8px;
-      align-items: center;
-      justify-content: center;
-
-      .quote {
-        &::before {
-          content: "“";
-        }
-        &::after {
-          content: "”";
-        }
-      }
-
-      .author {
-        font-weight: bold;
-      }
-
-      .get-new-quote {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-        width: 15px;
-        height: 15px;
-        background: none;
-        border: 2px solid var(--light);
-        cursor: pointer;
-        border-radius: 50%;
-        overflow: hidden;
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          background-color: var(--light);
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          transition:
-            width 0.2s ease,
-            height 0.2s ease;
-        }
-
-        &:hover::before {
-          width: 80%;
-          height: 80%;
-        }
-      }
-    }
-
-    .info {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 270px;
-      height: 90px;
-
-      .weather {
-        position: absolute;
-        width: 470px;
-        height: 140px;
-        transform: scale(0.5) translate(20px, -50px);
-        overflow: hidden;
-
-        iframe {
-          width: 100%;
-          height: 220px;
-          border: none;
-        }
-
-        a {
-          display: none;
-        }
-      }
-
-      .date {
-        position: absolute;
-        width: 160px;
-        bottom: -30px;
-        left: 50%;
-        transform: translateX(-40%);
-      }
-    }
-  </style>
 </header>
+
+<style>
+  header {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+
+    .open-menu {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      width: 30px;
+
+      svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .wow {
+      display: flex;
+      gap: 4px;
+      text-transform: capitalize;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .quote-of-the-day {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 300px;
+    height: 120px;
+    font-size: 14px;
+    background: var(--dark);
+    padding: 8px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+
+    .quote {
+      &::before {
+        content: "“";
+      }
+      &::after {
+        content: "”";
+      }
+    }
+
+    .author {
+      font-weight: bold;
+    }
+
+    .get-new-quote {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 15px;
+      height: 15px;
+      background: none;
+      border: 2px solid var(--light);
+      cursor: pointer;
+      border-radius: 50%;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background-color: var(--light);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s ease,
+          height 0.2s ease;
+      }
+
+      &:hover::before {
+        width: 80%;
+        height: 80%;
+      }
+    }
+  }
+
+  .info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 270px;
+    height: 90px;
+
+    .weather {
+      position: absolute;
+      width: 470px;
+      height: 140px;
+      transform: scale(0.5) translate(20px, -50px);
+      overflow: hidden;
+
+      iframe {
+        width: 100%;
+        height: 220px;
+        border: none;
+      }
+
+      a {
+        display: none;
+      }
+    }
+
+    .date {
+      position: absolute;
+      width: 160px;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-40%);
+    }
+  }
+</style>

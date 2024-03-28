@@ -3,13 +3,7 @@ import { Beats } from "./Beats";
 import { map } from "lodash-es";
 import { DEFAULT_GERNES, DEFAULT_SFX } from "./constants";
 import { createSignal, onMount } from "solid-js";
-import {
-  getAudioLevel,
-  getCustomSongs,
-  removeCustomSong,
-  saveCustomSong,
-  setAudioLevel,
-} from "./utils";
+import { getAudioLevel, setAudioLevel } from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -49,28 +43,10 @@ const Button = styled("button")`
   min-width: 100px;
 `;
 
-const CustomSongsInput = styled("input")`
-  outline: none;
-  padding: 4px;
-  border: 1px solid var(--light);
-  border-radius: 4px;
-  background: var(--dark);
-  color: var(--text);
-  height: 30px;
-
-  &::placeholder {
-    color: var(--text);
-  }
-`;
-
 export const Music = () => {
-  const [customSongName, setCustomSongName] = createSignal("");
-  const [customSongUrl, setCustomSongUrl] = createSignal("");
-  const [customSongs, setCustomSongs] = createSignal([]);
   const [localAudioLevel, setLocalAudioLevel] = createSignal();
 
   onMount(() => {
-    setCustomSongs(getCustomSongs());
     setLocalAudioLevel(getAudioLevel());
   });
 
@@ -88,44 +64,6 @@ export const Music = () => {
           <Beats src={song.src} name={song.name} />
         ))}
       </BeatsContainer>
-      <Title>Songs</Title>
-      <BeatsContainer>
-        {map(customSongs(), (song: { src: string; name: string }) => (
-          <Beats
-            src={song.src}
-            name={song.name}
-            onRemove={() => {
-              const newSongs = removeCustomSong(song.name);
-              setCustomSongs(newSongs as any);
-            }}
-          />
-        ))}
-      </BeatsContainer>
-      <Title>Add Song</Title>
-      <ButtonsContainer>
-        <CustomSongsInput
-          value={customSongName()}
-          onInput={(event: any) => setCustomSongName(event.target.value)}
-          placeholder="Name"
-        />
-        <CustomSongsInput
-          value={customSongUrl()}
-          onInput={(event: any) => setCustomSongUrl(event.target.value)}
-          placeholder="Src"
-        />
-        <Button
-          onClick={() => {
-            if (customSongName() !== "" && customSongUrl() !== "") {
-              const newSongs = saveCustomSong(customSongName(), customSongUrl());
-              setCustomSongs(newSongs as any);
-            }
-            setCustomSongName("");
-            setCustomSongUrl("");
-          }}
-        >
-          Add
-        </Button>
-      </ButtonsContainer>
       <Title>Options</Title>
       <ButtonsContainer>
         <Button

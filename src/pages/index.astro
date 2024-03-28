@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Sidebar from "../layouts/Sidebar.astro";
 import Header from "../layouts/Header.astro";
 import Footer from "../layouts/Footer.astro";
 import Shortcuts from "../layouts/Shortcuts.astro";
@@ -20,6 +21,7 @@ import { CustomShortcuts } from "../blocks/shortcuts/CustomShortcuts.tsx";
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <div class="backround-image" id="backround-image"></div>
   <Header />
+  <Sidebar />
   <main>
     <Search client:only />
     <Shortcuts />

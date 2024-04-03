@@ -159,7 +159,6 @@ export const MusicPlayer = () => {
   const [songSRC, setSongSRC] = createSignal("");
 
   const playPlaylist = (next = true) => {
-    document.dispatchEvent(new CustomEvent("preset:stop"));
     const songs = getCustomSongs();
     const filteredSonegs = filter(
       songs,

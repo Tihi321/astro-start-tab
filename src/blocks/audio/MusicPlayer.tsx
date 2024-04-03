@@ -2,6 +2,8 @@ import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { formatTime, getAudioLevel, getCustomSongs } from "./utils";
 import { Playlist } from "./Playlist";
+import { mutedSongs, setMutedSongs } from "./store";
+import { filter, includes, isEmpty } from "lodash-es";
 
 const Container = styled("div")`
   position: relative;
@@ -10,6 +12,20 @@ const Container = styled("div")`
   width: 100%;
   gap: 2px;
   background-color: var(--backdrop);
+
+  .next-song,
+  .prev-song {
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      top: -2px;
+      right: 0;
+      background: var(--light);
+    }
+  }
 `;
 
 const GroupContainer = styled("div")`
@@ -44,29 +60,38 @@ const StopButton = styled("button")`
   border: none;
 `;
 
-const PlayButton = styled("button")`
+const PlayButtonDefault = styled("button")`
+  position: relative;
   cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const PlayButton = styled(PlayButtonDefault)`
+  transform: rotate(90deg);
+`;
+
+const PrevButton = styled(PlayButtonDefault)`
+  transform: rotate(-90deg);
+`;
+
+const PlayElement = styled("span")`
+  display: block;
   width: 10px;
   height: 10px;
   background-image: linear-gradient(to right, var(--light), var(--light));
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  transform: rotate(90deg);
   border: none;
 `;
 
 const PlaylistButton = styled("button")`
   cursor: pointer;
-  width: 10px;
-  height: 10px;
-  background-image: linear-gradient(to right, var(--light), var(--light));
-  clip-path: polygon(0% 0%, 100% 0%, 100% 20%, 0% 20%), polygon(0% 40%, 100% 40%, 100% 60%, 0% 60%),
-    polygon(0% 80%, 100% 80%, 100% 100%, 0% 100%);
-  transform: rotate(90deg);
+  font-size: 12px;
   border: none;
-`;
-
-const PrevButton = styled(PlayButton)`
-  transform: rotate(-90deg);
+  background: none;
+  color: var(--text);
 `;
 
 const Slider = styled("input")`
@@ -128,6 +153,7 @@ export const MusicPlayer = () => {
   const [duration, setDuration] = createSignal<number>(0);
   const [currentTime, setCurrentTime] = createSignal<number>(0);
   const [audioLevel, setAudioLevel] = createSignal<number>(0);
+  const [songPlaying, setSongPlaying] = createSignal(false);
   const [openPlaylist, setOpenPlaylist] = createSignal(false);
   const [songName, setSongName] = createSignal("");
   const [songSRC, setSongSRC] = createSignal("");
@@ -135,15 +161,28 @@ export const MusicPlayer = () => {
   const playPlaylist = (next = true) => {
     document.dispatchEvent(new CustomEvent("preset:stop"));
     const songs = getCustomSongs();
-    const currentSongIndex = songs.findIndex((song: { src: string }) => song.src === songSRC());
-    const nextSong = songs[currentSongIndex + 1] || songs[0];
-    const prevSong = songs[currentSongIndex - 1] || songs[songs.length - 1];
-    const usedSong = next ? nextSong : prevSong;
-    setSongName(usedSong.name);
-    setSongSRC(usedSong.src);
-    audioElement.src = usedSong.src;
-    audioElement.volume = audioVolume() / audioLevel();
-    audioElement.play();
+    const filteredSonegs = filter(
+      songs,
+      (song: { src: string }) => !includes(mutedSongs, song.src)
+    );
+    if (isEmpty(filteredSonegs)) {
+      audioElement.pause();
+      setSongPlaying(false);
+    } else {
+      const currentSongIndex = filteredSonegs.findIndex(
+        (song: { src: string }) => song.src === songSRC()
+      );
+      const nextSong = filteredSonegs[currentSongIndex + 1] || filteredSonegs[0];
+      const prevSong =
+        filteredSonegs[currentSongIndex - 1] || filteredSonegs[filteredSonegs.length - 1];
+      const usedSong = next ? nextSong : prevSong;
+      setSongName(usedSong.name);
+      setSongSRC(usedSong.src);
+      audioElement.src = usedSong.src;
+      audioElement.volume = audioVolume() / audioLevel();
+      audioElement.play();
+      setSongPlaying(true);
+    }
   };
 
   const onChange = (event: any) => {
@@ -173,6 +212,9 @@ export const MusicPlayer = () => {
     setAudioVolume(Number(localStorage.getItem("playlist-audio-volume") || "5"));
     setAudioLevel(getAudioLevel());
 
+    const mutedSongs = localStorage.getItem("playlist-muted-songs");
+    setMutedSongs(mutedSongs ? JSON.parse(mutedSongs) : []);
+
     document.addEventListener("music:update", () => {
       if (!audioElement.paused) {
         audioElement.volume = audioVolume() / getAudioLevel();
@@ -181,6 +223,7 @@ export const MusicPlayer = () => {
 
     document.addEventListener("playlist:stop", () => {
       audioElement.pause();
+      setSongPlaying(false);
     });
 
     document.addEventListener("playlist:prev", () => {
@@ -220,24 +263,43 @@ export const MusicPlayer = () => {
       <GroupContainer>
         <GroupContainer>
           <PrevButton
+            class="prev-song"
             onClick={() => {
               playPlaylist(false);
             }}
-          ></PrevButton>
-          <StopButton
-            onClick={() => {
-              if (audioElement.paused) {
-                audioElement.play();
-              } else {
+          >
+            <PlayElement />
+          </PrevButton>
+          {songPlaying() && (
+            <StopButton
+              onClick={() => {
                 audioElement.pause();
-              }
-            }}
-          ></StopButton>
+                setSongPlaying(false);
+              }}
+            ></StopButton>
+          )}
+          {!songPlaying() && (
+            <PlayButton
+              onClick={() => {
+                if (audioElement.src === "") {
+                  playPlaylist();
+                } else if (!includes(mutedSongs, audioElement.src)) {
+                  audioElement.play();
+                  setSongPlaying(true);
+                }
+              }}
+            >
+              <PlayElement />
+            </PlayButton>
+          )}
           <PlayButton
+            class="next-song"
             onClick={() => {
               playPlaylist();
             }}
-          ></PlayButton>
+          >
+            <PlayElement />
+          </PlayButton>
         </GroupContainer>
         <Divider />
         <TimelineContainer>
@@ -265,7 +327,9 @@ export const MusicPlayer = () => {
             onClick={() => {
               document.dispatchEvent(new CustomEvent("preset:load"));
             }}
-          ></PlayButton>
+          >
+            <PlayElement />
+          </PlayButton>
         </GroupContainer>
         <Divider />
         <GroupContainer>
@@ -273,7 +337,9 @@ export const MusicPlayer = () => {
             onClick={() => {
               setOpenPlaylist(!openPlaylist());
             }}
-          ></PlaylistButton>
+          >
+            P
+          </PlaylistButton>
         </GroupContainer>
       </GroupContainer>
       {openPlaylist() && (
@@ -282,7 +348,9 @@ export const MusicPlayer = () => {
             setSongName(name);
             setSongSRC(src);
             audioElement.src = src;
+            audioElement.volume = audioVolume() / audioLevel();
             audioElement.play();
+            setSongPlaying(true);
           }}
         />
       )}

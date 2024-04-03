@@ -1,7 +1,8 @@
 import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { getCustomSongs, removeCustomSong, saveCustomSong } from "./utils";
-import { map } from "lodash-es";
+import { filter, includes, map } from "lodash-es";
+import { mutedSongs, setMutedSongs } from "./store";
 
 const Container = styled("div")`
   position: absolute;
@@ -46,7 +47,7 @@ const AddButton = styled("button")`
   width: 50px;
 `;
 
-const Name = styled("div")`
+const SongContainer = styled("div")`
   position: relative;
   width: 100%;
   text-align: center;
@@ -60,13 +61,29 @@ const Name = styled("div")`
       opacity: 1;
     }
   }
+
+  &.muted {
+    background: var(--dark);
+  }
 `;
 
-const RemoveButton = styled("button")`
+const Button = styled("button")`
   position: absolute;
   cursor: pointer;
   opacity: 0;
   top: 0;
+  bottom: 0;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-weight: bold;
+`;
+
+const MuteButton = styled(Button)`
+  left: 0;
+`;
+
+const RemoveButton = styled(Button)`
   right: 0;
 `;
 
@@ -106,17 +123,46 @@ export const Playlist = ({ onChange }: { onChange: (src: string, name: string) =
         </AddButton>
       </CustomSongsContainer>
       {map(customSongs(), (song: { name: string; src: string }) => (
-        <Name onClick={() => onChange(song.src, song.name)}>
+        <SongContainer
+          onClick={() => {
+            if (!includes(mutedSongs, song.src)) {
+              onChange(song.src, song.name);
+            }
+          }}
+          class={includes(mutedSongs, song.src) ? "muted" : ""}
+        >
+          <MuteButton
+            onClick={(event: Event) => {
+              event.stopPropagation();
+              let muted = [];
+              if (includes(mutedSongs, song.src)) {
+                muted = filter(mutedSongs, (value) => value !== song.src);
+              } else {
+                muted = [...mutedSongs, song.src];
+              }
+              setMutedSongs(muted);
+              localStorage.setItem("playlist-muted-songs", JSON.stringify(muted));
+            }}
+          >
+            M
+          </MuteButton>
           {song.name}
           <RemoveButton
-            onClick={() => {
+            onClick={(event: Event) => {
+              event.stopPropagation();
+              if (includes(mutedSongs, song.src)) {
+                const muted = filter(mutedSongs, (value) => value !== song.src);
+                setMutedSongs(muted);
+                localStorage.setItem("playlist-muted-songs", JSON.stringify(muted));
+              }
+
               const newSongs = removeCustomSong(song.name);
               setCustomSongs(newSongs as any);
             }}
           >
             X
           </RemoveButton>
-        </Name>
+        </SongContainer>
       ))}
     </Container>
   );

@@ -168,8 +168,22 @@ export const Beats = ({ src, name }: { name: string; src: string }) => {
       </audio>
       <Name>{name}</Name>
       <AudioControls>
-        <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
-        <Input type="number" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
+        <Slider
+          type="range"
+          min="0"
+          max="10"
+          step="0.1"
+          value={audioVolume()}
+          onChange={onChange}
+        />
+        <Input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={audioVolume()}
+          onChange={onChange}
+        />
       </AudioControls>
     </Container>
   );

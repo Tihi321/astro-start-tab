@@ -313,7 +313,14 @@ export const MusicPlayer = () => {
           {formatTime(duration())}
         </TimelineContainer>
         <Divider />
-        <Slider type="range" min="0" max="10" step="1" value={audioVolume()} onChange={onChange} />
+        <Slider
+          type="range"
+          min="0"
+          max="10"
+          step="0.01"
+          value={audioVolume()}
+          onChange={onChange}
+        />
         <Divider />
         <GroupContainer>
           <Title>B</Title>

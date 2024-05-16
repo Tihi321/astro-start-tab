@@ -4,6 +4,12 @@
     focusButton?.addEventListener("click", () => {
       document.body.classList.toggle("focus");
     });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.code === "Quote") {
+        document.body.classList.toggle("focus");
+      }
+    });
   });
 </script>
 

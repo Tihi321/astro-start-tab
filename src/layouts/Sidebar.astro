@@ -48,26 +48,12 @@ import { MusicPlayer } from "../blocks/audio/MusicPlayer";
   });
 </script>
 
-<aside id="sidebar">
+<aside id="sidebar" class="music-sidebar">
   <MusicPlayer client:only />
   <button class="toggle-sidebar" id="toggle-sidebar"></button>
 </aside>
 
 <style>
-  aside {
-    position: fixed;
-    z-index: 1;
-    top: 35%;
-    left: 0;
-    transform: translate(-100%, -50%);
-    width: 300px;
-    transition: transform 0.3s ease-in-out;
-
-    &.hide {
-      transform: translate(0%, -50%);
-    }
-  }
-
   .toggle-sidebar {
     position: absolute;
     top: 0;

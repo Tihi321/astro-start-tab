@@ -33,14 +33,46 @@ body {
 		overflow: hidden;
 	}
 
-	.focus-content {
+	.focus-hide {
 		transition: opacity 0.3s ease;
 	}
 
+	.music-sidebar {
+		position: fixed;
+    z-index: 1;
+    width: 300px;
+		top: 35%;
+    left: 0;
+    transform: translate(-100%, -50%);
+		transition: transform 0.3s ease;
+
+		&.hide {
+      transform: translate(0%, -50%);
+    }
+	}
+
 	&.focus {
-		.focus-content {
+		overflow: hidden;
+
+		.focus-hide {
 			opacity: 0;
 			pointer-events: none;
+		}
+
+		.music-sidebar {
+			opacity: 0.1;
+			top: 0%;
+			left: 0%;
+			transform: translate(0%, 0%);
+			transition: opacity 0.3s ease;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			&.hide {
+				transform: translate(0%, 0%);
+			}
 		}
 	}
 

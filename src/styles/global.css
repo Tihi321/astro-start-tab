@@ -33,6 +33,17 @@ body {
 		overflow: hidden;
 	}
 
+	.focus-content {
+		transition: opacity 0.3s ease;
+	}
+
+	&.focus {
+		.focus-content {
+			opacity: 0;
+			pointer-events: none;
+		}
+	}
+
 	@media (min-width: 769px) {
 		font-size: 18px;
 		line-height: 1.7;

@@ -51,8 +51,22 @@ body {
     }
 	}
 
+	.footer {
+		opacity: 1;
+		transition: opacity 0.3s ease;
+	}
+
 	&.focus {
 		overflow: hidden;
+
+		.footer {
+			opacity: 0.1;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+	
 
 		.focus-hide {
 			opacity: 0;

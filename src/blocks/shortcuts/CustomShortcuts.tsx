@@ -73,7 +73,14 @@ const AddContainer = styled("div")`
   left: 50%;
   transform: translateX(-50%);
   width: 200px;
-  height: 100%;
+  height: 20px;
+
+  &.show {
+    .inputs {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
 `;
 
 const ToggleButtons = styled("div")`
@@ -135,15 +142,10 @@ const Inputs = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  height: 80px;
   opacity: 0;
   transition: opacity 0.2s;
   pointer-events: none;
-
-  &.show {
-    pointer-events: auto;
-    opacity: 1;
-  }
 `;
 
 const Input = styled("input")`
@@ -226,7 +228,7 @@ export const CustomShortcuts = () => {
               </Shortcut>
             ))}
           </Shortcuts>
-          <AddContainer>
+          <AddContainer class={showInputs() ? "show" : ""}>
             <ToggleButtons>
               <AddButton onClick={() => setShowInputs(!showInputs())}>
                 {showInputs() ? "-" : "+"}
@@ -240,7 +242,7 @@ export const CustomShortcuts = () => {
                 {"hide"}
               </HideShortcutsButton>
             </ToggleButtons>
-            <Inputs class={showInputs() ? "show" : ""}>
+            <Inputs class="inputs">
               <Input
                 autocomplete="off"
                 type="text"

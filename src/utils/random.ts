@@ -51,3 +51,7 @@ export const getRandomWord = async () => {
     return { name, meaning };
   }
 };
+
+export const getRandomNumber = (limit: number = 20) => {
+  return Math.floor(Math.random() * limit + 1);
+};

@@ -4,6 +4,7 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
 ---
 
 <script>
+  import { getRandomNumber } from "../utils/random.ts";
   document.addEventListener("DOMContentLoaded", () => {
     const closeMenu = document.getElementById("close-menu");
     const changeBackground = document.getElementById("change-background");
@@ -26,17 +27,18 @@ import { SearchEngines } from "../blocks/inputs/SearchEngines.tsx";
     });
 
     changeBackground?.addEventListener("click", () => {
-      fetch("https://source.unsplash.com/random/?nature").then((response) => {
-        localStorage.setItem("bg-image-url", response.url);
-        const menuContainer = document.querySelector(".backround-image");
-        menuContainer?.setAttribute("style", `background-image: url(${response.url})`);
-      });
+      const imageNumber = getRandomNumber(20);
+      const formattedNumber = imageNumber.toString().padStart(2, "0");
+      const imageUrl = `/images/bg/bg0${formattedNumber}.jpg`;
+      localStorage.setItem("bg-image-url", imageUrl);
+      const menuContainer = document.querySelector(".backround-image");
+      menuContainer?.setAttribute("style", `background-image: url(${imageUrl})`);
     });
 
     clearBackground?.addEventListener("click", () => {
       localStorage.setItem("bg-image-url", "");
       const menuContainer = document.querySelector(".backround-image");
-      menuContainer?.setAttribute("style", "background-image: url(/images/nature-bg.jpeg)");
+      menuContainer?.setAttribute("style", "background-image: url(/images/bg.jpeg)");
     });
 
     saveBackground?.addEventListener("click", () => {

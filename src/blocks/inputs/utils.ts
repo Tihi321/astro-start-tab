@@ -38,6 +38,20 @@ export const getDuckDuckGo = (search: string) => {
     : `https://www.duckduckgo.com`;
 };
 
+export const getMorphicSearchUrl = (search: string) => {
+  return search
+    ? `https://www.morphic.sh/search?q=${encodeURIComponent(search)}`
+    : `https://www.morphic.sh`;
+};
+
+export const getYoucomSearchUrl = (search: string) => {
+  return search
+    ? `https://you.com/search?q=${encodeURIComponent(
+        search
+      )}&fromSearchBar=true&tbm=youchat&chatMode=default`
+    : `https://you.com`;
+};
+
 export const getPhindSearchUrl = (search: string) => {
   return search
     ? `https://www.phind.com/search?q=${encodeURIComponent(search)}&ignoreSearchResults=false`

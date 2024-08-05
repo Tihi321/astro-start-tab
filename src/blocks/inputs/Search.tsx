@@ -7,12 +7,14 @@ import {
   getDuckDuckGo,
   getGameDevSearch,
   getGoogleSearch,
+  getMorphicSearchUrl,
   getPhindSearchUrl,
   getPixabaySearch,
   getSkillShareSearch,
   getSoundCloudSearch,
   getSpotifySearch,
   getUdemySearch,
+  getYoucomSearchUrl,
   getYoutubeMusicSearch,
   getYoutubeSearch,
   getZenvaSearch,
@@ -84,6 +86,12 @@ const sendAiSearch = (search: string) => {
   const searchEngine = localStorage.getItem("ai-search-engine") || "phind";
 
   switch (searchEngine) {
+    case "morphic":
+      window.location.href = getMorphicSearchUrl(search);
+      break;
+    case "youcom":
+      window.location.href = getYoucomSearchUrl(search);
+      break;
     case "phind":
       window.location.href = getPhindSearchUrl(search);
       break;
@@ -98,9 +106,6 @@ const sendTextSearch = (search: string) => {
   const searchEngine = localStorage.getItem("text-search-engine") || "google";
 
   switch (searchEngine) {
-    case "phind":
-      window.location.href = getPhindSearchUrl(search);
-      break;
     case "google":
       window.location.href = getGoogleSearch(search);
       break;

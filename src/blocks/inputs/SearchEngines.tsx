@@ -26,7 +26,7 @@ export const SearchEngines = () => {
   const [selectedMusicSearchEngine, setSelectedMusicSearchEngine] = createSignal<string>("");
 
   onMount(() => {
-    setSelectedAISearchEngine(localStorage.getItem("ai-search-engine") || "phind");
+    setSelectedAISearchEngine(localStorage.getItem("ai-search-engine") || "morphic");
     setSelectedTextSearchEngine(localStorage.getItem("text-search-engine") || "google");
     setSelectedVideoSearchEngine(localStorage.getItem("video-search-engine") || "youtube");
     setSelectedMusicSearchEngine(localStorage.getItem("music-search-engine") || "soundcloud");
@@ -41,6 +41,8 @@ export const SearchEngines = () => {
         }}
         value={selectedAISearchEngine()}
       >
+        <Option value="morphic">Morphic</Option>
+        <Option value="youcom">You.com</Option>
         <Option value="phind">Phind</Option>
         <Option value="copilot">Copilot</Option>
       </Select>

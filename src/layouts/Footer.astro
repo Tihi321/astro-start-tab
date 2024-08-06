@@ -10,7 +10,7 @@
     }
   };
   document.addEventListener("DOMContentLoaded", () => {
-    const focusButton = document.querySelector(".focus");
+    const focusButton = document.querySelector("#focus-button");
     focusButton?.addEventListener("click", () => {
       toggleFocus();
     });
@@ -39,7 +39,7 @@
   </div>
 
   <div class="socials">
-    <button class="focus">
+    <button id="focus-button" class="focus-button">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -160,7 +160,7 @@
     }
   }
 
-  .focus {
+  .focus-button {
     background-color: transparent;
     border: none;
     cursor: pointer;

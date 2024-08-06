@@ -197,7 +197,9 @@ export const CustomShortcuts = () => {
       {!showCustomShortcuts() && (
         <HiddenContainer>
           <ShowShortcutsButton
-            onClick={() => {
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
               localStorage.setItem("showcustomshortcuts", "true");
               setShowCustomShotcuts(true);
             }}
@@ -213,7 +215,9 @@ export const CustomShortcuts = () => {
               <Shortcut>
                 <Link href={values.url}>{values.name}</Link>
                 <RemoveButton
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     const newShortcuts = shortcuts().filter(
                       (shortcut) => !isEqual(shortcut.name, values.name)
                     );
@@ -228,11 +232,19 @@ export const CustomShortcuts = () => {
           </Shortcuts>
           <AddContainer class={showInputs() ? "show" : ""}>
             <ToggleButtons>
-              <AddButton onClick={() => setShowInputs(!showInputs())}>
+              <AddButton
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setShowInputs(!showInputs());
+                }}
+              >
                 {showInputs() ? "-" : "+"}
               </AddButton>
               <HideShortcutsButton
-                onClick={() => {
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
                   localStorage.setItem("showcustomshortcuts", "false");
                   setShowCustomShotcuts(false);
                 }}

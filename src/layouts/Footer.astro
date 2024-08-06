@@ -24,6 +24,8 @@
     const focus = localStorage.getItem("focus");
     if (focus === "true") {
       document.body.classList.add("focus");
+    } else {
+      document.body.classList.remove("focus");
     }
   });
 </script>

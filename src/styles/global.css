@@ -53,6 +53,8 @@ body {
 	}
 
 	&.focus {
+		overflow: hidden;
+		
 		.focus-items {
 			display: none;
 			pointer-events: none;

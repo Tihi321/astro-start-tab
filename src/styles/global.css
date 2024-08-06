@@ -33,10 +33,6 @@ body {
 		overflow: hidden;
 	}
 
-	.focus-hide {
-		transition: opacity 0.3s ease;
-	}
-
 	.music-sidebar {
 		position: fixed;
     z-index: 1;
@@ -57,40 +53,13 @@ body {
 	}
 
 	&.focus {
-		overflow: hidden;
-		
-		.footer {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			opacity: 0.1;
-
-			&:hover {
-				opacity: 1;
-			}
-		}
-	
-
-		.focus-hide {
-			opacity: 0;
+		.focus-items {
+			display: none;
 			pointer-events: none;
 		}
 
-		.music-sidebar {
-			opacity: 0.1;
-			top: 0%;
-			left: 0%;
-			transform: translate(0%, 0%);
-			transition: opacity 0.3s ease;
-
-			&:hover {
-				opacity: 1;
-			}
-
-			&.hide {
-				transform: translate(0%, 0%);
-			}
+		.search-container {
+			height: 500px;
 		}
 	}
 

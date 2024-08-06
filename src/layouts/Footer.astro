@@ -1,15 +1,30 @@
 <script>
+  const toggleFocus = () => {
+    const focus = localStorage.getItem("focus");
+    if (focus === "true") {
+      localStorage.setItem("focus", "false");
+      document.body.classList.remove("focus");
+    } else {
+      localStorage.setItem("focus", "true");
+      document.body.classList.add("focus");
+    }
+  };
   document.addEventListener("DOMContentLoaded", () => {
     const focusButton = document.querySelector(".focus");
     focusButton?.addEventListener("click", () => {
-      document.body.classList.toggle("focus");
+      toggleFocus();
     });
 
     document.addEventListener("keydown", function (event) {
       if (event.ctrlKey && event.code === "Quote") {
-        document.body.classList.toggle("focus");
+        toggleFocus();
       }
     });
+
+    const focus = localStorage.getItem("focus");
+    if (focus === "true") {
+      document.body.classList.add("focus");
+    }
   });
 </script>
 

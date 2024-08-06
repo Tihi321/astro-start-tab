@@ -2,17 +2,19 @@ import { isEqual, map } from "lodash-es";
 import { createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 
-const Container = styled("div")`
-  position: relative;
-  padding: 8px 0;
-`;
-
 const ShowContainer = styled("div")`
   height: 160px;
+  position: relative;
+  padding: 24px 0;
+  margin: 8px 0;
 `;
 
 const HiddenContainer = styled("div")`
-  height: 40px;
+  height: 20px;
+  margin: 8px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Shortcuts = styled("div")`
@@ -69,7 +71,7 @@ const AddContainer = styled("div")`
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: -20px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 200px;
@@ -97,10 +99,6 @@ const ShowShortcutsButton = styled("button")`
   justify-content: center;
   width: 200px;
   height: 20px;
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
   line-height: 1;
   border-radius: 4px;
   background: var(--dark);
@@ -195,7 +193,7 @@ export const CustomShortcuts = () => {
   });
 
   return (
-    <Container>
+    <div>
       {!showCustomShortcuts() && (
         <HiddenContainer>
           <ShowShortcutsButton
@@ -273,6 +271,6 @@ export const CustomShortcuts = () => {
           </AddContainer>
         </ShowContainer>
       )}
-    </Container>
+    </div>
   );
 };

@@ -6,14 +6,21 @@ import { getFilteredSearch } from "./utils";
 
 const Container = styled("div")`
   margin: auto;
+  height: 212px;
+  overflow: hidden;
+  transition: height 0.3s ease-in-out;
+  border-radius: 8px;
+  background: var(--dark);
+
+  &:hover {
+    height: 360px;
+  }
 `;
 
 const Feed = styled("div")`
   width: 100%;
   height: 380px;
-  background: var(--dark);
-  padding: 8px;
-  border-radius: 8px;
+  padding: 8px 8px 18px;
   overflow: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -49,9 +56,7 @@ const Feed = styled("div")`
 const ExpandedFeed = styled("div")`
   width: 100%;
   height: 400px;
-  background: var(--dark);
-  padding: 16px;
-  border-radius: 8px;
+  padding: 16px 16px 48px;
   font-size: 14px;
   overflow: auto;
   display: flex;

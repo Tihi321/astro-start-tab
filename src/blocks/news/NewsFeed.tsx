@@ -246,16 +246,16 @@ export const NewsFeed = () => {
               Bug
             </NewsFeedButton>
             <NewsFeedButton
-              class={isEqual(selected(), NEWS_LIST.VERGE) ? "active" : ""}
-              onClick={() => setSelected(NEWS_LIST.VERGE)}
-            >
-              Verge
-            </NewsFeedButton>
-            <NewsFeedButton
               class={isEqual(selected(), NEWS_LIST.TECHCRUNCH) ? "active" : ""}
               onClick={() => setSelected(NEWS_LIST.TECHCRUNCH)}
             >
               Techcrunch
+            </NewsFeedButton>
+            <NewsFeedButton
+              class={isEqual(selected(), NEWS_LIST.VERGE) ? "active" : ""}
+              onClick={() => setSelected(NEWS_LIST.VERGE)}
+            >
+              Verge
             </NewsFeedButton>
           </NewsFeedButtons>
           <ContentOptions>

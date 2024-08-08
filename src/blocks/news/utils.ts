@@ -90,7 +90,7 @@ export const getTechCrunch = async () => {
 };
 
 export const getFilteredSearch = (list: any, search: string, full: boolean) => {
-  return filter(full ? list : list.slice(0, 10), (news) => {
+  return filter(full ? list : list.slice(0, 4), (news) => {
     return (
       includes(toLower(get(news, ["title"], "")), toLower(search)) ||
       includes(toLower(get(news, ["content"], "")), toLower(search))

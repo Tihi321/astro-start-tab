@@ -26,8 +26,7 @@ const Container = styled("div")`
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  height: 120px;
-  margin-top: 24px;
+  margin: 48px 0;
 `;
 
 const SearchContainer = styled("div")`
@@ -187,7 +186,7 @@ export const Search = () => {
     }
   };
   return (
-    <Container class="search-container">
+    <Container>
       <SearchContainer>
         <Input
           onInput={(e) => {

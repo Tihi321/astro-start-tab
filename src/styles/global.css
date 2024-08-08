@@ -59,10 +59,6 @@ body {
 			display: none;
 			pointer-events: none;
 		}
-
-		.search-container {
-			height: 500px;
-		}
 	}
 
 	@media (min-width: 769px) {

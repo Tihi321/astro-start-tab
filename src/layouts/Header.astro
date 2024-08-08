@@ -7,9 +7,38 @@ import { DateTime } from "../blocks/info/DateTime.tsx";
   import { get, capitalize } from "lodash-es";
   import { getRandomQuote, getRandomWord, getEnglishQuote } from "../utils/random";
 
+  const toggleFocus = () => {
+    const focus = localStorage.getItem("focus");
+    if (focus === "true") {
+      localStorage.setItem("focus", "false");
+      document.body.classList.remove("focus");
+    } else {
+      localStorage.setItem("focus", "true");
+      document.body.classList.add("focus");
+    }
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
     const openMenu = document.getElementById("open-menu");
     const getNewQuote = document.getElementById("get-new-quote");
+
+    const focusButton = document.querySelector("#focus-button");
+    focusButton?.addEventListener("click", () => {
+      toggleFocus();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.code === "Quote") {
+        toggleFocus();
+      }
+    });
+
+    const focus = localStorage.getItem("focus");
+    if (focus === "true") {
+      document.body.classList.add("focus");
+    } else {
+      document.body.classList.remove("focus");
+    }
 
     document.addEventListener("keydown", function (event) {
       if (event.ctrlKey && event.code === "Comma") {
@@ -109,7 +138,10 @@ import { DateTime } from "../blocks/info/DateTime.tsx";
   <div class="quote-of-the-day">
     <div class="quote" id="quote"></div>
     <div class="author" id="author"></div>
-    <button class="get-new-quote" id="get-new-quote" title="Get new quote"> </button>
+    <div class="quote-buttons">
+      <button id="focus-button" class="quote-button light-button"></button>
+      <button class="quote-button white-button" id="get-new-quote" title="Get new quote"></button>
+    </div>
   </div>
   <div class="info">
     <div class="weather">
@@ -208,14 +240,19 @@ import { DateTime } from "../blocks/info/DateTime.tsx";
       font-weight: bold;
     }
 
-    .get-new-quote {
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      width: 15px;
-      height: 15px;
+    .quote-buttons {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .quote-button {
+      color: var(--light);
+      position: relative;
+      width: 20px;
+      height: 20px;
       background: none;
-      border: 2px solid var(--light);
+      border: 2px solid currentColor;
       cursor: pointer;
       border-radius: 50%;
       overflow: hidden;
@@ -227,7 +264,7 @@ import { DateTime } from "../blocks/info/DateTime.tsx";
         left: 50%;
         width: 0;
         height: 0;
-        background-color: var(--light);
+        background-color: currentColor;
         border-radius: 50%;
         transform: translate(-50%, -50%);
         transition:
@@ -239,6 +276,14 @@ import { DateTime } from "../blocks/info/DateTime.tsx";
         width: 80%;
         height: 80%;
       }
+    }
+
+    .white-button {
+      color: var(--light);
+    }
+
+    .light-button {
+      color: var(--link-color);
     }
   }
 

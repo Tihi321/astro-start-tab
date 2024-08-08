@@ -1,35 +1,3 @@
-<script>
-  const toggleFocus = () => {
-    const focus = localStorage.getItem("focus");
-    if (focus === "true") {
-      localStorage.setItem("focus", "false");
-      document.body.classList.remove("focus");
-    } else {
-      localStorage.setItem("focus", "true");
-      document.body.classList.add("focus");
-    }
-  };
-  document.addEventListener("DOMContentLoaded", () => {
-    const focusButton = document.querySelector("#focus-button");
-    focusButton?.addEventListener("click", () => {
-      toggleFocus();
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.ctrlKey && event.code === "Quote") {
-        toggleFocus();
-      }
-    });
-
-    const focus = localStorage.getItem("focus");
-    if (focus === "true") {
-      document.body.classList.add("focus");
-    } else {
-      document.body.classList.remove("focus");
-    }
-  });
-</script>
-
 <footer class="footer">
   <div class="info">
     <div class="websites">
@@ -39,25 +7,6 @@
   </div>
 
   <div class="socials">
-    <button id="focus-button" class="focus-button">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="22" y1="12" x2="18" y2="12"></line>
-        <line x1="6" y1="12" x2="2" y2="12"></line>
-        <line x1="12" y1="6" x2="12" y2="2"></line>
-        <line x1="12" y1="22" x2="12" y2="18"></line>
-      </svg>
-    </button>
     <a href="mailto:tihomir.selak@outlook.com" target="_blank">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -157,18 +106,6 @@
     svg {
       width: 18px;
       height: 18px;
-    }
-  }
-
-  .focus-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--link-color);
-    padding: 0;
-
-    &:hover {
-      color: var(--link-hover);
     }
   }
 </style>

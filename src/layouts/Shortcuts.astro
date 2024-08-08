@@ -153,12 +153,17 @@
 
 <style>
   .shortcuts {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     gap: 4px;
+    grid-auto-rows: max-content;
+    height: 125px;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+
+    &:hover {
+      height: 350px;
+    }
 
     .link {
       border: 1px solid var(--light);
@@ -166,7 +171,6 @@
       padding: 8px;
       border-radius: 4px;
       cursor: pointer;
-      width: 70px;
       height: 60px;
       font-size: 14px;
       display: flex;

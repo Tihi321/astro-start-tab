@@ -84,84 +84,92 @@ const Submit = styled("button")`
   }
 `;
 
-const sendAiSearch = (search: string) => {
+const openLink = (url: string, openOutside = false) => {
+  if (openOutside) {
+    window.open(url, "_blank");
+  } else {
+    window.location.href = url;
+  }
+};
+
+const sendAiSearch = (search: string, openOutside = false) => {
   const searchEngine = localStorage.getItem("ai-search-engine") || "phind";
 
   switch (searchEngine) {
     case "morphic":
-      window.location.href = getMorphicSearchUrl(search);
+      openLink(getMorphicSearchUrl(search), openOutside);
       break;
     case "youcom":
-      window.location.href = getYoucomSearchUrl(search);
+      openLink(getYoucomSearchUrl(search), openOutside);
       break;
     case "phind":
-      window.location.href = getPhindSearchUrl(search);
+      openLink(getPhindSearchUrl(search), openOutside);
       break;
     case "copilot":
-      window.location.href = getCopilotSearchUrl(search);
+      openLink(getCopilotSearchUrl(search), openOutside);
       break;
     default:
   }
 };
 
-const sendTextSearch = (search: string) => {
+const sendTextSearch = (search: string, openOutside = false) => {
   const searchEngine = localStorage.getItem("text-search-engine") || "google";
 
   switch (searchEngine) {
     case "google":
-      window.location.href = getGoogleSearch(search);
+      openLink(getGoogleSearch(search), openOutside);
       break;
     case "bing":
-      window.location.href = getBingSearch(search);
+      openLink(getBingSearch(search), openOutside);
       break;
     case "duckduckgo":
-      window.location.href = getDuckDuckGo(search);
+      openLink(getDuckDuckGo(search), openOutside);
       break;
     default:
   }
 };
 
-const sendVideoSearch = (search: string) => {
+const sendVideoSearch = (search: string, openOutside = false) => {
   const searchEngine = localStorage.getItem("video-search-engine") || "youtube";
 
   switch (searchEngine) {
     case "youtube":
-      window.location.href = getYoutubeSearch(search);
+      openLink(getYoutubeSearch(search), openOutside);
       break;
     case "skillshare":
-      window.location.href = getSkillShareSearch(search);
+      openLink(getSkillShareSearch(search), openOutside);
       break;
     case "udemy":
-      window.location.href = getUdemySearch(search);
+      openLink(getUdemySearch(search), openOutside);
       break;
     case "zenva":
-      window.location.href = getZenvaSearch(search);
+      openLink(getZenvaSearch(search), openOutside);
       break;
     case "gamedev":
-      window.location.href = getGameDevSearch(search);
+      openLink(getGameDevSearch(search), openOutside);
       break;
     default:
   }
 };
 
-const sendMusicSearch = (search: string) => {
+const sendMusicSearch = (search: string, openOutside = false) => {
   const searchEngine = localStorage.getItem("music-search-engine") || "soundcloud";
 
   switch (searchEngine) {
     case "soundcloud":
-      window.location.href = getSoundCloudSearch(search);
+      openLink(getSoundCloudSearch(search), openOutside);
       break;
     case "spotify":
-      window.location.href = getSpotifySearch(search);
+      openLink(getSpotifySearch(search), openOutside);
       break;
     case "pixabay":
-      window.location.href = getPixabaySearch(search);
+      openLink(getPixabaySearch(search), openOutside);
       break;
     case "chosic":
-      window.location.href = getChosicSearch(search);
+      openLink(getChosicSearch(search), openOutside);
       break;
     case "youtubemusic":
-      window.location.href = getYoutubeMusicSearch(search);
+      openLink(getYoutubeMusicSearch(search), openOutside);
       break;
     default:
   }
@@ -171,18 +179,18 @@ export const Search = () => {
   const [searchType, setSearchType] = createSignal<string>("ai");
   const [search, setSearch] = createSignal<string>("");
 
-  const sendSearch = () => {
+  const sendSearch = (openOutside = false) => {
     if (searchType() === "ai") {
-      sendAiSearch(search());
+      sendAiSearch(search(), openOutside);
     }
     if (searchType() === "text") {
-      sendTextSearch(search());
+      sendTextSearch(search(), openOutside);
     }
     if (searchType() === "video") {
-      sendVideoSearch(search());
+      sendVideoSearch(search(), openOutside);
     }
     if (searchType() === "music") {
-      sendMusicSearch(search());
+      sendMusicSearch(search(), openOutside);
     }
   };
   return (
@@ -194,14 +202,24 @@ export const Search = () => {
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              sendSearch();
+              sendSearch(false);
             }
           }}
           type="text"
           placeholder="Search"
           value={search()}
         />
-        <Submit onClick={sendSearch}>
+        <Submit
+          onMouseDown={(e) => {
+            if (e.button === 1) {
+              sendSearch(true);
+            }
+
+            if (e.button === 0) {
+              sendSearch(false);
+            }
+          }}
+        >
           <img src="/images/icons/magnifier.png" />
         </Submit>
       </SearchContainer>

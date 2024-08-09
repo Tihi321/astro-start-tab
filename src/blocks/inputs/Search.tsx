@@ -20,13 +20,19 @@ import {
   getZenvaSearch,
 } from "./utils";
 
-const Container = styled("div")`
+const Container = styled("div")<{ focus: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 8px;
   margin: 48px 0;
+  opacity: ${(props) => (props.focus ? 0.9 : 0.6)};
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 const SearchContainer = styled("div")`
@@ -67,6 +73,10 @@ const Input = styled("input")`
   color: var(--text);
   &::placeholder {
     color: var(--text);
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -178,6 +188,7 @@ const sendMusicSearch = (search: string, openOutside = false) => {
 export const Search = () => {
   const [searchType, setSearchType] = createSignal<string>("ai");
   const [search, setSearch] = createSignal<string>("");
+  const [searchFocus, setSearchFocus] = createSignal<boolean>(false);
 
   const sendSearch = (openOutside = false) => {
     if (searchType() === "ai") {
@@ -194,7 +205,7 @@ export const Search = () => {
     }
   };
   return (
-    <Container>
+    <Container focus={searchFocus()}>
       <SearchContainer>
         <Input
           onInput={(e) => {
@@ -208,6 +219,12 @@ export const Search = () => {
           type="text"
           placeholder="Search"
           value={search()}
+          onFocus={(e) => {
+            setSearchFocus(true);
+          }}
+          onBlur={(e) => {
+            setSearchFocus(false);
+          }}
         />
         <Submit
           onMouseDown={(e) => {

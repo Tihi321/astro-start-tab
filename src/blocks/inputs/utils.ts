@@ -38,6 +38,12 @@ export const getDuckDuckGo = (search: string) => {
     : `https://www.duckduckgo.com`;
 };
 
+export const getPerplexitySearchUrl = (search: string) => {
+  return search
+    ? `https://www.perplexity.ai/search?q=${encodeURIComponent(search)}&copilot=false&s=d`
+    : `https://www.perplexity.ai`;
+};
+
 export const getMorphicSearchUrl = (search: string) => {
   return search
     ? `https://www.morphic.sh/search?q=${encodeURIComponent(search)}`

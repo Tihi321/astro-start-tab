@@ -8,6 +8,7 @@ import {
   getGameDevSearch,
   getGoogleSearch,
   getMorphicSearchUrl,
+  getPerplexitySearchUrl,
   getPhindSearchUrl,
   getPixabaySearch,
   getSkillShareSearch,
@@ -106,6 +107,9 @@ const sendAiSearch = (search: string, openOutside = false) => {
   const searchEngine = localStorage.getItem("ai-search-engine") || "phind";
 
   switch (searchEngine) {
+    case "perplexity":
+      openLink(getPerplexitySearchUrl(search), openOutside);
+      break;
     case "morphic":
       openLink(getMorphicSearchUrl(search), openOutside);
       break;

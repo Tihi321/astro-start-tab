@@ -23,14 +23,14 @@ const NewsLinks = styled("div")`
   align-items: end;
 
   img {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
   }
 
   span {
     flex: 1;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
 
@@ -39,10 +39,10 @@ const NewsLink = styled("a")`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  width: 150px;
+  width: 100px;
   background: var(--dark);
   border-radius: 8px;
-  padding: 8px;
+  padding: 4px;
 `;
 
 const FeedOptions = styled("div")`
@@ -288,6 +288,10 @@ export const NewsFeed = () => {
           </ContentOptions>
         </FeedOptions>
         <NewsLinks>
+          <NewsLink href="https://app.daily.dev">
+            <img src="/images/icons/daily-dev.png" />
+            <span>Daily</span>
+          </NewsLink>
           <NewsLink href="https://www.perplexity.ai/discover">
             <img src="/images/icons/perplexity.png" />
             <span>Discover</span>

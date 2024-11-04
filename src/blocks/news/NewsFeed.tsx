@@ -296,10 +296,6 @@ export const NewsFeed = () => {
             <img src="/images/icons/perplexity.png" />
             <span>Discover</span>
           </NewsLink>
-          <NewsLink href="https://app.letsrecast.ai/?ref=null">
-            <img src="/images/icons/recast.png" />
-            <span>Recast</span>
-          </NewsLink>
         </NewsLinks>
       </Buttons>
       <SearchPresets>

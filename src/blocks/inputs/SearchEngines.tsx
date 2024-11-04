@@ -42,6 +42,7 @@ export const SearchEngines = () => {
         value={selectedAISearchEngine()}
       >
         <Option value="perplexity">Perplexity</Option>
+        <Option value="chatgpt">ChatGpt</Option>
         <Option value="morphic">Morphic</Option>
         <Option value="youcom">You.com</Option>
         <Option value="phind">Phind</Option>

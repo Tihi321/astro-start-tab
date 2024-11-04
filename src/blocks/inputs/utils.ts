@@ -44,6 +44,12 @@ export const getPerplexitySearchUrl = (search: string) => {
     : `https://www.perplexity.ai`;
 };
 
+export const getChatGptSearchUrl = (search: string) => {
+  return search
+    ? `https://chatgpt.com/?q=${encodeURIComponent(search)}&hints=search&ref=ext`
+    : `https://chatgpt.com`;
+};
+
 export const getMorphicSearchUrl = (search: string) => {
   return search
     ? `https://www.morphic.sh/search?q=${encodeURIComponent(search)}`

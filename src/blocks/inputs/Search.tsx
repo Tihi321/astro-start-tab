@@ -2,6 +2,7 @@ import { styled } from "solid-styled-components";
 import { createSignal } from "solid-js";
 import {
   getBingSearch,
+  getChatGptSearchUrl,
   getChosicSearch,
   getCopilotSearchUrl,
   getDuckDuckGo,
@@ -109,6 +110,9 @@ const sendAiSearch = (search: string, openOutside = false) => {
   switch (searchEngine) {
     case "perplexity":
       openLink(getPerplexitySearchUrl(search), openOutside);
+      break;
+    case "chatgpt":
+      openLink(getChatGptSearchUrl(search), openOutside);
       break;
     case "morphic":
       openLink(getMorphicSearchUrl(search), openOutside);

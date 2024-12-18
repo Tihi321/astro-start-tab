@@ -50,6 +50,16 @@ export const getChatGptSearchUrl = (search: string) => {
     : `https://chatgpt.com`;
 };
 
+export const getClaudeSearchUrl = (search: string) => {
+  return search ? `https://claude.ai/new?q=${encodeURIComponent(search)}` : `https://claude.ai`;
+};
+
+export const getMixtralSearchUrl = (search: string) => {
+  return search
+    ? `https://chat.mistral.ai/chat?q=${encodeURIComponent(search)}`
+    : `https://chat.mistral.ai`;
+};
+
 export const getMorphicSearchUrl = (search: string) => {
   return search
     ? `https://www.morphic.sh/search?q=${encodeURIComponent(search)}`

@@ -4,10 +4,12 @@ import {
   getBingSearch,
   getChatGptSearchUrl,
   getChosicSearch,
+  getClaudeSearchUrl,
   getCopilotSearchUrl,
   getDuckDuckGo,
   getGameDevSearch,
   getGoogleSearch,
+  getMixtralSearchUrl,
   getMorphicSearchUrl,
   getPerplexitySearchUrl,
   getPhindSearchUrl,
@@ -113,6 +115,12 @@ const sendAiSearch = (search: string, openOutside = false) => {
       break;
     case "chatgpt":
       openLink(getChatGptSearchUrl(search), openOutside);
+      break;
+    case "claude":
+      openLink(getClaudeSearchUrl(search), openOutside);
+      break;
+    case "mixtral":
+      openLink(getMixtralSearchUrl(search), openOutside);
       break;
     case "morphic":
       openLink(getMorphicSearchUrl(search), openOutside);

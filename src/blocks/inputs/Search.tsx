@@ -13,6 +13,7 @@ import {
   getMorphicSearchUrl,
   getPerplexitySearchUrl,
   getPhindSearchUrl,
+  getGrokSearchUrl,
   getPixabaySearch,
   getSkillShareSearch,
   getSoundCloudSearch,
@@ -116,23 +117,26 @@ const sendAiSearch = (search: string, openOutside = false) => {
     case "chatgpt":
       openLink(getChatGptSearchUrl(search), openOutside);
       break;
-    case "claude":
-      openLink(getClaudeSearchUrl(search), openOutside);
-      break;
     case "mixtral":
       openLink(getMixtralSearchUrl(search), openOutside);
       break;
-    case "morphic":
-      openLink(getMorphicSearchUrl(search), openOutside);
-      break;
-    case "youcom":
-      openLink(getYoucomSearchUrl(search), openOutside);
+    case "grok":
+      openLink(getGrokSearchUrl(search), openOutside);
       break;
     case "phind":
       openLink(getPhindSearchUrl(search), openOutside);
       break;
     case "copilot":
       openLink(getCopilotSearchUrl(search), openOutside);
+      break;
+    case "claude":
+      openLink(getClaudeSearchUrl(search), openOutside);
+      break;
+    case "morphic":
+      openLink(getMorphicSearchUrl(search), openOutside);
+      break;
+    case "youcom":
+      openLink(getYoucomSearchUrl(search), openOutside);
       break;
     default:
   }

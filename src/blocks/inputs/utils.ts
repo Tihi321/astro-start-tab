@@ -74,6 +74,10 @@ export const getYoucomSearchUrl = (search: string) => {
     : `https://you.com`;
 };
 
+export const getGrokSearchUrl = (search: string) => {
+  return search ? `https://grok.com?q=${encodeURIComponent(search)}` : `https://grok.com`;
+};
+
 export const getPhindSearchUrl = (search: string) => {
   return search
     ? `https://www.phind.com/search?q=${encodeURIComponent(search)}&ignoreSearchResults=false`

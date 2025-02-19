@@ -43,12 +43,13 @@ export const SearchEngines = () => {
       >
         <Option value="perplexity">Perplexity</Option>
         <Option value="chatgpt">ChatGpt</Option>
-        <Option value="claude">Claude</Option>
         <Option value="mixtral">Mixtral</Option>
-        <Option value="morphic">Morphic</Option>
-        <Option value="youcom">You.com</Option>
-        <Option value="phind">Phind</Option>
         <Option value="copilot">Copilot</Option>
+        <Option value="grok">Grok</Option>
+        <Option value="phind">Phind</Option>
+        <Option value="youcom">You.com</Option>
+        <Option value="morphic">Morphic</Option>
+        <Option value="claude">Claude</Option>
       </Select>
       <Select
         onChange={(event) => {

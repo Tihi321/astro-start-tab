@@ -26,6 +26,12 @@ export const getGoogleSearch = (search: string) => {
     : `https://www.google.com`;
 };
 
+export const getBraveSearch = (search: string) => {
+  return search
+    ? `https://search.brave.com/search?q=${encodeURIComponent(search)}`
+    : `https://search.brave.com`;
+};
+
 export const getBingSearch = (search: string) => {
   return search
     ? `https://www.bing.com/search?q=${encodeURIComponent(search)}`

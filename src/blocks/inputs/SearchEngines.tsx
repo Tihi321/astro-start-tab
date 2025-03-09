@@ -59,6 +59,7 @@ export const SearchEngines = () => {
         value={selectedTextSearchEngine()}
       >
         <Option value="google">Google</Option>
+        <Option value="brave">Brave</Option>
         <Option value="bing">Bing</Option>
         <Option value="duckduckgo">DuckDuckGo</Option>
       </Select>

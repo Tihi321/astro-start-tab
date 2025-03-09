@@ -23,6 +23,7 @@ import {
   getYoutubeMusicSearch,
   getYoutubeSearch,
   getZenvaSearch,
+  getBraveSearch,
 } from "./utils";
 
 const Container = styled("div")<{ focus: boolean }>`
@@ -148,6 +149,9 @@ const sendTextSearch = (search: string, openOutside = false) => {
   switch (searchEngine) {
     case "google":
       openLink(getGoogleSearch(search), openOutside);
+      break;
+    case "brave":
+      openLink(getBraveSearch(search), openOutside);
       break;
     case "bing":
       openLink(getBingSearch(search), openOutside);

@@ -23,7 +23,7 @@ export const getEnglishQuote = async () => {
   if (!isEmpty(localState)) {
     return localState[random(0, localState.length - 1)];
   } else {
-    const response = await fetch("https://cdn.tihomir-selak.from.hr/assets/api/quotes-eng.json");
+    const response = await fetch("https://cdn.tihomir-selak.from.hr/api/quotes-eng.json");
     const data = await response.json();
     const quotes = get(data, ["data"], []);
 
